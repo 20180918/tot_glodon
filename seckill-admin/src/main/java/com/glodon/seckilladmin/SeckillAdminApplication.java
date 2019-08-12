@@ -7,7 +7,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 
 @SpringBootApplication
 @ServletComponentScan
-@MapperScan("com.glodon.seckilladmin.dao")
+@MapperScan("com.glodon.seckilladmin.mapper")
 public class SeckillAdminApplication {
 
 	public static void main(String[] args) {
