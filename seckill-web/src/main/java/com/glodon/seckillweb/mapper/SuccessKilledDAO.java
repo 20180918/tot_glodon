@@ -19,7 +19,7 @@ public interface SuccessKilledDAO extends MyBatisBaseDao<SuccessKilled, SuccessK
      * @param userPhone
      * @return插入的行数
      */
-    Integer insertSuccessKilled(@Param("seckillId") String seckillId, @Param("userPhone") String userPhone);
+    int insertSuccessKilled(@Param("seckillId") String seckillId, @Param("userPhone") String userPhone);
 
 
     /**

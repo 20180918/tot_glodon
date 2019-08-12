@@ -12,11 +12,10 @@
     <sql id="Base_Column_List">
     seckill_id, user_phone, `state`, create_time, product_name, seckill_price
   </sql>
-
-    <select id="insertSuccessKilled" parameterType="java.lang.String" resultType="Integer">
+    <insert id="insertSuccessKilled" parameterType="java.lang.String">
    INSERT ignore INTO success_killed(seckill_id,user_phone,state)
         VALUES (#{seckillId},#{userPhone},0)
-  </select>
+  </insert>
 
     <select id="queryByIdWithSeckill" parameterType="java.lang.String" resultMap="BaseResultMap">
         select

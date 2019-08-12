@@ -114,6 +114,7 @@ public class SeckillServiceImpl implements SeckillService {
             throw e2;
         } catch (Exception e) {
             //所以编译期异常转化为运行期异常
+            e.printStackTrace();
             throw new RuntimeException();
         }
     }
