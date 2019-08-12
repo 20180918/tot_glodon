@@ -37,6 +37,9 @@ public class SeckillController {
     public String list(Model model) {
         //获取秒杀列表
         List<SeckillProduct> seckillList = seckillService.getSeckillList();
+        for (SeckillProduct seckillProduct : seckillList) {
+            System.out.println(seckillProduct.toString());
+        }
         model.addAttribute("seckillList", seckillList);
         return "list";
     }
