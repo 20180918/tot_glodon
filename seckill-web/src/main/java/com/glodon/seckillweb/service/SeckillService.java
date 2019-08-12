@@ -22,7 +22,7 @@ public interface SeckillService {
     /**
      * 根据商品id去查询商品
      */
-    SeckillProduct selectBySeckillId(String seckillId);
+    SeckillProduct selectBySeckillId(String seckillId,boolean ifFastSearch);
 
     /**
      * 暴露url地址

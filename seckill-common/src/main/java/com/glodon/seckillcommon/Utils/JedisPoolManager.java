@@ -16,7 +16,7 @@ import java.io.IOException;
 public class JedisPoolManager {
     private volatile static JedisPoolManager jedisPoolManager;
 
-    private final JedisPool pool;
+    public final JedisPool pool;
 
     public static JedisPoolManager getJedisPoolManager() {
         if (jedisPoolManager == null) {
@@ -49,9 +49,8 @@ public class JedisPoolManager {
     }
 
     public static void main(String[] args) {
-        Jedis jedis = JedisPoolManager.getJedisPoolManager().pool.getResource();
-        jedis.set("foo", "bar");
-        System.out.println(jedis.get("foo"));
+
+
     }
 
 

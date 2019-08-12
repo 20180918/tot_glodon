@@ -27,7 +27,7 @@
         where seckill_id = #{seckillId,jdbcType=VARCHAR}
     </select>
     <!--  查询所有商品列表-->
-    <select id="selectAll" resultType="com.glodon.seckillcommon.domain.SeckillProduct">
+    <select id="selectAll" resultMap="BaseResultMap">
       select
       <include refid="Base_Column_List"/>
       from seckill_product
