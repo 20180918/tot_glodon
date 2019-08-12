@@ -19,6 +19,7 @@
 	<modules>
 		<module>seckill-admin</module>
 		<module>seckill-web</module>
+		<module>seckill-common</module>
 	</modules>
 
 	<properties>
