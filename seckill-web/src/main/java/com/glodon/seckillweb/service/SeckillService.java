@@ -1,6 +1,7 @@
 package com.glodon.seckillweb.service;
 
 import com.glodon.seckillcommon.domain.SeckillProduct;
+import com.glodon.seckillweb.dto.SeckillExecution;
 import com.glodon.seckillweb.dto.UrlExposer;
 
 import java.util.List;
@@ -31,4 +32,12 @@ public interface SeckillService {
      * @return
      */
     UrlExposer exportSeckillUrl(String seckillId);
+
+    /**
+     * 执行秒杀
+     *
+     * @param seckillId
+     * @return
+     */
+    SeckillExecution doSeckill(String seckillId, String userPhone, String md5);
 }

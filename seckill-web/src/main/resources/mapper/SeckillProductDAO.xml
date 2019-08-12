@@ -32,6 +32,16 @@
       <include refid="Base_Column_List"/>
       from seckill_product
     </select>
+
+    <update id="reduceNumber">
+        UPDATE seckill_product
+        SET number = number-1
+        WHERE seckill_id=#{seckillId}
+        AND start_time <![CDATA[ <= ]]> #{killTime}
+        AND end_time >= #{killTime}
+        AND number > 0;
+    </update>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from seckill_product
     where seckill_id = #{seckillId,jdbcType=VARCHAR}
