@@ -35,7 +35,7 @@ public class SeckillServiceImpl implements SeckillService {
         String key = "product_detail" + seckillId;
         String redisObject= RedisUtil.get(key);
         if (redisObject == null) {
-            SeckillProduct seckillProduct = seckillProductDAO.selectByPrimaryKey(seckillId);
+            SeckillProduct seckillProduct = selectBySeckillId(seckillId);
             RedisUtil.set(key.getBytes(), SerializationUtil.serialize(seckillProduct));
             return seckillProduct;
         } else {
@@ -51,7 +51,7 @@ public class SeckillServiceImpl implements SeckillService {
     @Override
     public UrlExposer exportSeckillUrl(String seckillId) {
 
-        SeckillProduct seckillProduct = getProductBySeckillId(seckillId, seckillProductDAO);
+        SeckillProduct seckillProduct = selectBySeckillId(seckillId);
         //若是秒杀未开启
         Date startTime = seckillProduct.getStartTime();
         Date endTime = seckillProduct.getEndTime();
@@ -70,25 +70,6 @@ public class SeckillServiceImpl implements SeckillService {
         String base = seckillId + "/" + "wangpengpengasdas54d57asd754as";
         String md5 = DigestUtils.md5DigestAsHex(base.getBytes());
         return md5;
-    }
-
-    /**
-     * 秒杀系统查询优化
-     * @param seckillId
-     * @param seckillProductDAO
-     * @return SeckillProduct
-     * @author wangpp-b
-     */
-    private static SeckillProduct getProductBySeckillId(String seckillId, SeckillProductDAO seckillProductDAO) {
-        String key = "product_detail" + seckillId;
-        String redisObject= RedisUtil.get(key);
-        if (redisObject == null) {
-            SeckillProduct seckillProduct = seckillProductDAO.selectByPrimaryKey(seckillId);
-            RedisUtil.set(key.getBytes(), SerializationUtil.serialize(seckillProduct));
-            return seckillProduct;
-        } else {
-            return (SeckillProduct) SerializationUtil.deserialize(RedisUtil.get(key.getBytes()));
-        }
     }
 
 }
