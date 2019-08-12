@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.glodon.seckillweb.mapper.SeckillProductDAO">
+    <resultMap id="BaseResultMap" type="com.glodon.seckillcommon.domain.SeckillProduct">
+        <id column="seckill_id" jdbcType="VARCHAR" property="seckillId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="number" jdbcType="INTEGER" property="number"/>
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="product_code" jdbcType="VARCHAR" property="productCode"/>
+        <result column="product_price" jdbcType="DECIMAL" property="productPrice"/>
+        <result column="seckill_price" jdbcType="DECIMAL" property="seckillPrice"/>
+        <result column="product_description" jdbcType="VARCHAR" property="productDescription"/>
+        <result column="product_img" jdbcType="VARCHAR" property="productImg"/>
+        <result column="product_state" jdbcType="INTEGER" property="productState"/>
+        <result column="product_stocks" jdbcType="INTEGER" property="productStocks"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    seckill_id, `name`, `number`, start_time, end_time, create_time, product_code, product_price, 
+    seckill_price, product_description, product_img, product_state, product_stocks
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from seckill_product
+        where seckill_id = #{seckillId,jdbcType=VARCHAR}
+    </select>
+    <!--  查询所有商品列表-->
+    <select id="selectAll" resultType="com.glodon.seckillcommon.domain.SeckillProduct">
+      select
+      <include refid="Base_Column_List"/>
+      from seckill_product
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from seckill_product
+    where seckill_id = #{seckillId,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.glodon.seckillcommon.domain.SeckillProduct">
+    insert into seckill_product (seckill_id, `name`, `number`, 
+      start_time, end_time, create_time, 
+      product_code, product_price, seckill_price, 
+      product_description, product_img, product_state, 
+      product_stocks)
+    values (#{seckillId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{productCode,jdbcType=VARCHAR}, #{productPrice,jdbcType=DECIMAL}, #{seckillPrice,jdbcType=DECIMAL}, 
+      #{productDescription,jdbcType=VARCHAR}, #{productImg,jdbcType=VARCHAR}, #{productState,jdbcType=INTEGER}, 
+      #{productStocks,jdbcType=INTEGER})
+  </insert>
+    <insert id="insertSelective" parameterType="com.glodon.seckillcommon.domain.SeckillProduct">
+        insert into seckill_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="seckillId != null">
+                seckill_id,
+            </if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="number != null">
+                `number`,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="productCode != null">
+                product_code,
+            </if>
+            <if test="productPrice != null">
+                product_price,
+            </if>
+            <if test="seckillPrice != null">
+                seckill_price,
+            </if>
+            <if test="productDescription != null">
+                product_description,
+            </if>
+            <if test="productImg != null">
+                product_img,
+            </if>
+            <if test="productState != null">
+                product_state,
+            </if>
+            <if test="productStocks != null">
+                product_stocks,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="seckillId != null">
+                #{seckillId,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="number != null">
+                #{number,jdbcType=INTEGER},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="productCode != null">
+                #{productCode,jdbcType=VARCHAR},
+            </if>
+            <if test="productPrice != null">
+                #{productPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="seckillPrice != null">
+                #{seckillPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="productDescription != null">
+                #{productDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="productImg != null">
+                #{productImg,jdbcType=VARCHAR},
+            </if>
+            <if test="productState != null">
+                #{productState,jdbcType=INTEGER},
+            </if>
+            <if test="productStocks != null">
+                #{productStocks,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.glodon.seckillcommon.domain.SeckillProduct">
+        update seckill_product
+        <set>
+            <if test="name != null">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="number != null">
+                `number` = #{number,jdbcType=INTEGER},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="productCode != null">
+                product_code = #{productCode,jdbcType=VARCHAR},
+            </if>
+            <if test="productPrice != null">
+                product_price = #{productPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="seckillPrice != null">
+                seckill_price = #{seckillPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="productDescription != null">
+                product_description = #{productDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="productImg != null">
+                product_img = #{productImg,jdbcType=VARCHAR},
+            </if>
+            <if test="productState != null">
+                product_state = #{productState,jdbcType=INTEGER},
+            </if>
+            <if test="productStocks != null">
+                product_stocks = #{productStocks,jdbcType=INTEGER},
+            </if>
+        </set>
+        where seckill_id = #{seckillId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.glodon.seckillcommon.domain.SeckillProduct">
+    update seckill_product
+    set `name` = #{name,jdbcType=VARCHAR},
+      `number` = #{number,jdbcType=INTEGER},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      product_code = #{productCode,jdbcType=VARCHAR},
+      product_price = #{productPrice,jdbcType=DECIMAL},
+      seckill_price = #{seckillPrice,jdbcType=DECIMAL},
+      product_description = #{productDescription,jdbcType=VARCHAR},
+      product_img = #{productImg,jdbcType=VARCHAR},
+      product_state = #{productState,jdbcType=INTEGER},
+      product_stocks = #{productStocks,jdbcType=INTEGER}
+    where seckill_id = #{seckillId,jdbcType=VARCHAR}
+  </update>
+</mapper>
