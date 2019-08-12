@@ -25,7 +25,7 @@ public class SeckillController {
     private SeckillService seckillService;
 
     /**
-     * 秒杀列表
+     * 秒杀列表 (http://localhost:8080/seckill/list)
      *
      * @param model
      * @return
@@ -34,9 +34,6 @@ public class SeckillController {
     public String list(Model model) {
         //获取秒杀列表
         List<SeckillProduct> seckillList = seckillService.getSeckillList();
-        for (SeckillProduct seckillProduct : seckillList) {
-            System.out.println(seckillProduct.toString());
-        }
         model.addAttribute("seckillList", seckillList);
         return "list";
     }
