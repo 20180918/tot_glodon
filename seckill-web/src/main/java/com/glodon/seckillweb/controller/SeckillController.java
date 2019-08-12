@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,7 +45,7 @@ public class SeckillController {
         if (seckillId == null) {
             return "redirect:/seckill/list";
         }
-        SeckillProduct seckillProduct = seckillService.selectBySeckillId(seckillId,false);
+        SeckillProduct seckillProduct = seckillService.selectBySeckillId(seckillId, false);
         if (seckillProduct == null) {
             return "forward:/seckill/list";
         }
@@ -63,6 +65,18 @@ public class SeckillController {
             result = new SeckillResult<UrlExposer>(false, e.getMessage());
         }
         return result;
+    }
+
+    /**
+     * 获取系统时间
+     *
+     * @return
+     */
+    @RequestMapping(value = "/time/now", method = RequestMethod.GET)
+    @ResponseBody
+    public SeckillResult<Long> time() {
+        Date now = new Date();
+        return new SeckillResult(true, now.getTime());
     }
 
 //    @RequestMapping(value = "/{seckillId}/{md5}/execution",
