@@ -50,7 +50,7 @@ public class UrlExposer {
         this.end = end;
     }
 
-    public UrlExposer(boolean exposed, long seckillId) {
+    public UrlExposer(boolean exposed, String id, long nowTimeTime, long time, long seckillId) {
         this.exposed = exposed;
         this.seckillId = seckillId;
     }
