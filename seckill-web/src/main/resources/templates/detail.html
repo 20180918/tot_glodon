@@ -18,15 +18,15 @@
         <div class="col-md-12 column">
             <div class="row clearfix panel-body">
                 <div class="pannel-heading col-md-6 column">
-                    <img th:src="${seckillProduct.productImg}" th:width="400px">
+                    <img th:src="${seckillProduct.productImg}" th:width="400px" style="border-radius: 10px">
                 </div>
 
                 <div class="pannel-heading col-md-6 column">
                     <h1 th:text="${seckillProduct.name}"></h1>
-                    <s><h1 th:text="'市场价格：￥'+${seckillProduct.productPrice}"></h1></s>
+                    <s><h2 th:text="'市场价格：￥'+${seckillProduct.productPrice}"></h2></s>
                     <h1 th:text="${'秒杀价格：'+seckillProduct.seckillPrice}"></h1>
-                    <h1 th:text="${'剩余库存：'+seckillProduct.number}"></h1>
-                    <h2 th:text="${'活动时间：'+seckillProduct.startTime}+'~'+${seckillProduct.endTime}"></h2>
+                    <h2 th:text="${'剩余库存：'+seckillProduct.number}"></h2>
+                    <h4 th:text="${'活动时间：'+seckillProduct.startTime}+'~'+${seckillProduct.endTime}"></h4>
                 </div>
 
                 <div class=" panel-body">

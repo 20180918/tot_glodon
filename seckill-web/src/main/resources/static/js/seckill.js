@@ -44,16 +44,27 @@ var seckill = {
                             //1:先禁用按钮
                             $(this).addClass('disabled');
                             //2:发送秒杀请求执行秒杀
+                            console.log("发送秒杀请求执行秒杀")
                             $.post(killUrl, {}, function (result) {
                                 if (result && result['success']) {
+                                    console.log(result)
                                     var killResult = result['data'];
+
                                     var state = killResult['state'];
                                     var stateInfo = killResult['stateInfo'];
                                     //3:显示秒杀结果
-                                    node.html('<span class="label label-success">' + stateInfo + '</span>');
-
-                                    if (result.data.state === 6) {
-                                        seckill.VAL.intervX = window.setInterval(seckill.isGrab, 1000);
+                                    console.log(killResult.state)
+                                    if(killResult.state==200){
+                                        node.html('<span class="label label-success"> 秒杀成功 </span>');
+                                    }
+                                    else if(killResult.state==401){
+                                        node.html('<span class="label label-success"> 秒杀已经关闭 </span>');
+                                    }
+                                    else if(killResult.state==402){
+                                        node.html('<span class="label label-success"> 禁止重复秒杀 </span>');
+                                    }
+                                    else if(killResult.state==400){
+                                        node.html('<span class="label label-success"> 服务异常 </span>');
                                     }
 
                                 }

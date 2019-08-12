@@ -1,11 +1,13 @@
 package com.glodon.seckillweb.controller;
 
 import com.glodon.seckillcommon.domain.SeckillProduct;
+import com.glodon.seckillcommon.domain.SuccessKilled;
 import com.glodon.seckillcommon.exception.ClosedSeckillException;
 import com.glodon.seckillcommon.exception.RepeatSeckillException;
 import com.glodon.seckillweb.dto.SeckillExecution;
 import com.glodon.seckillweb.dto.SeckillResult;
 import com.glodon.seckillweb.dto.UrlExposer;
+import com.glodon.seckillweb.mapper.SuccessKilledDAO;
 import com.glodon.seckillweb.service.SeckillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +30,8 @@ public class SeckillController {
 
     @Autowired
     private SeckillService seckillService;
+    @Autowired
+    private SuccessKilledDAO successKilledDAO;
 
     /**
      * 秒杀列表 (http://localhost:8080/seckill/list)
@@ -85,6 +89,7 @@ public class SeckillController {
         } catch (Exception e) {
             result = new SeckillResult<UrlExposer>(false, e.getMessage());
         }
+        System.out.println("success"+result);
         return result;
     }
 
@@ -96,18 +101,18 @@ public class SeckillController {
      * @param userPhone
      * @return
      */
-    @RequestMapping(value = "/{seckillId}/{md5}/execution",
+    @RequestMapping(value = "/execution/{seckillId}/{userPhone}/{md5}",
             method = RequestMethod.POST,
             produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public SeckillResult<SeckillExecution> execute(@PathVariable("seckillId") Long seckillId,
                                                    @PathVariable("md5") String md5,
-                                                   @CookieValue(value = "userPhone",required = false) Long userPhone)
+                                                   @PathVariable("userPhone") String userPhone)
     {
-//        if (userPhone==null)
-//        {
-//            return new SeckillResult<SeckillExecution>(false,"未注册");
-//        }
+        if (userPhone==null)
+        {
+            return new SeckillResult<SeckillExecution>(false,"未注册");
+        }
         SeckillResult<SeckillExecution> result;
 
         try {
