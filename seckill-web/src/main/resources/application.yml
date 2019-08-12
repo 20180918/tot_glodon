@@ -1,12 +1,6 @@
-
 server:
   port: 8091
 
-age:
-  18
-boy:
-  height: 19
-  age: 84
 spring:
   servlet:
     multipart:
@@ -21,5 +15,5 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     connectionProperties: druid.stat.mergeSql=true
 mybatis:
-  type-aliases-package: com.glodon.springbootdemo.property
+  type-aliases-package: com.glodon.seckillweb.domain
   mapper-locations: classpath:mapper/*.xml
