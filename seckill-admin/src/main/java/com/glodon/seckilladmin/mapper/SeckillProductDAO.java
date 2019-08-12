@@ -1,4 +1,4 @@
-package com.glodon.seckillcommon.mapper;
+package com.glodon.seckilladmin.mapper;
 
 import com.glodon.seckillcommon.domain.SeckillProduct;
 import org.springframework.stereotype.Repository;

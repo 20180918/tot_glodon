@@ -1,4 +1,4 @@
-package com.glodon.seckillcommon.mapper;
+package com.glodon.seckilladmin.mapper;
 
 import com.glodon.seckillcommon.domain.SuccessKilled;
 import com.glodon.seckillcommon.domain.SuccessKilledKey;
