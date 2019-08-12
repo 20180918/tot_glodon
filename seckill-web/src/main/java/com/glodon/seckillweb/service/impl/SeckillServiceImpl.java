@@ -31,17 +31,23 @@ public class SeckillServiceImpl implements SeckillService {
     }
 
     @Override
-    public SeckillProduct selectBySeckillId(String seckillId) {
-        String key = "product_detail" + seckillId;
-        String redisObject= RedisUtil.get(key);
-        if (redisObject == null) {
-            SeckillProduct seckillProduct = selectBySeckillId(seckillId);
-            RedisUtil.set(key.getBytes(), SerializationUtil.serialize(seckillProduct));
+    public SeckillProduct selectBySeckillId(String seckillId, boolean fastsearch) {
+        if (fastsearch){
+            String key = "product_detail" + seckillId;
+            String redisObject= RedisUtil.get(key);
+            if (redisObject == null) {
+                SeckillProduct seckillProduct = seckillProductDAO.selectByPrimaryKey(seckillId);
+                RedisUtil.set(key.getBytes(), SerializationUtil.serialize(seckillProduct));
+                return seckillProduct;
+            } else {
+                return (SeckillProduct) SerializationUtil.deserialize(RedisUtil.get(key.getBytes()));
+            }
+        }else {
+            SeckillProduct seckillProduct = seckillProductDAO.selectByPrimaryKey(seckillId);
             return seckillProduct;
-        } else {
-            return (SeckillProduct) SerializationUtil.deserialize(RedisUtil.get(key.getBytes()));
         }
     }
+
 
     /**
      * @param seckillId
@@ -51,7 +57,7 @@ public class SeckillServiceImpl implements SeckillService {
     @Override
     public UrlExposer exportSeckillUrl(String seckillId) {
 
-        SeckillProduct seckillProduct = selectBySeckillId(seckillId);
+        SeckillProduct seckillProduct = selectBySeckillId(seckillId,true);
         //若是秒杀未开启
         Date startTime = seckillProduct.getStartTime();
         Date endTime = seckillProduct.getEndTime();

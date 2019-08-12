@@ -43,7 +43,7 @@ public class SeckillController {
         if (seckillId == null) {
             return "redirect:/seckill/list";
         }
-        SeckillProduct seckillProduct = seckillService.selectBySeckillId(seckillId);
+        SeckillProduct seckillProduct = seckillService.selectBySeckillId(seckillId,false);
         if (seckillProduct == null) {
             return "forward:/seckill/list";
         }
