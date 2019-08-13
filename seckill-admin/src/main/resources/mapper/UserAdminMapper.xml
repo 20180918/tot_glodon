@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.glodon.seckilladmin.mapper.UserAdminMapper">
-    <resultMap id="BaseResultMap" type="com.glodon.seckilladmin.domain.UserAdmin">
-        <id column="root_id" jdbcType="INTEGER" property="rootId"/>
-        <result column="root_name" jdbcType="VARCHAR" property="rootName"/>
-        <result column="root_password" jdbcType="VARCHAR" property="rootPassword"/>
-    </resultMap>
-    <sql id="Base_Column_List">
+  <resultMap id="BaseResultMap" type="com.glodon.seckilladmin.domain.UserAdmin">
+    <id column="root_id" jdbcType="INTEGER" property="rootId" />
+    <result column="root_name" jdbcType="VARCHAR" property="rootName" />
+    <result column="root_password" jdbcType="VARCHAR" property="rootPassword" />
+  </resultMap>
+  <sql id="Base_Column_List">
     root_id, root_name, root_password
   </sql>
     <!--根据用户名查询-->
@@ -26,55 +26,53 @@
     delete from user_admin
     where root_id = #{rootId,jdbcType=INTEGER}
   </delete>
-    <insert id="insert" parameterType="com.glodon.seckilladmin.domain.UserAdmin">
+  <insert id="insert" parameterType="com.glodon.seckilladmin.domain.UserAdmin">
     insert into user_admin (root_id, root_name, root_password
       )
     values (#{rootId,jdbcType=INTEGER}, #{rootName,jdbcType=VARCHAR}, #{rootPassword,jdbcType=VARCHAR}
       )
   </insert>
-    <insert id="insertSelective" parameterType="com.glodon.seckilladmin.domain.UserAdmin">
-        insert into user_admin
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="rootId != null">
-                root_id,
-            </if>
-            <if test="rootName != null">
-                root_name,
-            </if>
-            <if test="rootPassword != null">
-                root_password,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="rootId != null">
-                #{rootId,jdbcType=INTEGER},
-            </if>
-            <if test="rootName != null">
-                #{rootName,jdbcType=VARCHAR},
-            </if>
-            <if test="rootPassword != null">
-                #{rootPassword,jdbcType=VARCHAR},
-            </if>
-        </trim>
-    </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.glodon.seckilladmin.domain.UserAdmin">
-        update user_admin
-        <set>
-            <if test="rootName != null">
-                root_name = #{rootName,jdbcType=VARCHAR},
-            </if>
-            <if test="rootPassword != null">
-                root_password = #{rootPassword,jdbcType=VARCHAR},
-            </if>
-        </set>
-        where root_id = #{rootId,jdbcType=INTEGER}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="com.glodon.seckilladmin.domain.UserAdmin">
+  <insert id="insertSelective" parameterType="com.glodon.seckilladmin.domain.UserAdmin">
+    insert into user_admin
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rootId != null">
+        root_id,
+      </if>
+      <if test="rootName != null">
+        root_name,
+      </if>
+      <if test="rootPassword != null">
+        root_password,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rootId != null">
+        #{rootId,jdbcType=INTEGER},
+      </if>
+      <if test="rootName != null">
+        #{rootName,jdbcType=VARCHAR},
+      </if>
+      <if test="rootPassword != null">
+        #{rootPassword,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.glodon.seckilladmin.domain.UserAdmin">
+    update user_admin
+    <set>
+      <if test="rootName != null">
+        root_name = #{rootName,jdbcType=VARCHAR},
+      </if>
+      <if test="rootPassword != null">
+        root_password = #{rootPassword,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where root_id = #{rootId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.glodon.seckilladmin.domain.UserAdmin">
     update user_admin
     set root_name = #{rootName,jdbcType=VARCHAR},
       root_password = #{rootPassword,jdbcType=VARCHAR}
     where root_id = #{rootId,jdbcType=INTEGER}
   </update>
-
-
 </mapper>

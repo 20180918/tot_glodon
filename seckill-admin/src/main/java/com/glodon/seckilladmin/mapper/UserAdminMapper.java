@@ -9,9 +9,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserAdminMapper extends MyBatisBaseDao<UserAdmin, Integer> {
-<<<<<<< HEAD
     UserAdmin selectByRootName(String name);
-=======
 
->>>>>>> d673d723724fe1a4dbb623b1f175a43348d3fdae
 }

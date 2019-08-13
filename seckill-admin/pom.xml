@@ -23,12 +23,6 @@
 			<artifactId>seckill-common</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-<<<<<<< HEAD
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis</artifactId>
-			<version>3.5.2</version>
-=======
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -40,7 +34,6 @@
 			<artifactId>junit-jupiter-api</artifactId>
 			<version>RELEASE</version>
 			<scope>compile</scope>
->>>>>>> d673d723724fe1a4dbb623b1f175a43348d3fdae
 		</dependency>
 	</dependencies>
 
