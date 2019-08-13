@@ -1,7 +1,7 @@
 package com.glodon.seckillweb.service.impl;
 
-import com.glodon.seckillcommon.Utils.RedisUtil;
-import com.glodon.seckillcommon.Utils.SerializationUtil;
+import com.glodon.seckillcommon.utils.RedisUtil;
+import com.glodon.seckillcommon.utils.SerializationUtil;
 import com.glodon.seckillcommon.domain.SeckillProduct;
 import com.glodon.seckillcommon.domain.SuccessKilled;
 import com.glodon.seckillcommon.exception.ClosedSeckillException;
