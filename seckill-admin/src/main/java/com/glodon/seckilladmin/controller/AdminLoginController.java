@@ -31,12 +31,20 @@ public class AdminLoginController {
         return "admin";
     }
 
+    /**
+     * 用户登录
+     *
+     * @param username
+     * @param password
+     * @param checkcode
+     * @param session
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(@RequestParam(value = "username") String username, String password, String checkcode, HttpSession session) throws Exception {
         String code = (String) session.getAttribute("code");
         boolean flag = loginService.validate(code, username, password, checkcode);
-        System.out.println(username + " " + " " + password + " " + checkcode + " " + code);
-        System.out.println(flag);
         if (flag) {
             return "redirect:/admin/add";
         }

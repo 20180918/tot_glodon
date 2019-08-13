@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-
+/**
+ * @author lic-s
+ */
 @Service
 public class LoginServiceImpl implements LoginService {
     @Autowired
@@ -37,7 +39,3 @@ public class LoginServiceImpl implements LoginService {
         }
     }
 }
-
-
-
-
