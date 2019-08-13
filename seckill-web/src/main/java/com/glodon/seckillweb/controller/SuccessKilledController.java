@@ -43,10 +43,9 @@ public class SuccessKilledController {
      */
     @RequestMapping(value = "/list/{phone}", method = RequestMethod.GET)
     public String killedlist(@PathVariable("phone") String  phone,Model model) {
-
         List<SuccessKilled> successKilledList = successkilledService.getSuccessSeckillList(phone);
         model.addAttribute("successKilledList", successKilledList);
-        return "record";
+        return "recordlist";
     }
 
 }
