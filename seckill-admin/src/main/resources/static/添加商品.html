@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
   <head>
     <title>添加商品</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -22,8 +22,6 @@
     </script>
   </head>
   <body>
-    <div id="base" class="">
-
       <!-- Unnamed (Rectangle) -->
       <div id="u14" class="ax_default shape">
         <div id="u14_div" class=""></div>
@@ -67,110 +65,6 @@
             </div>
           </div>
 
-          <!-- Unnamed (Menu Item) -->
-          <div id="u24" class="ax_default table_cell">
-            <img id="u24_img" class="img " src="images/添加商品/u24.png"/>
-            <!-- Unnamed () -->
-            <div id="u25" class="text" style="display:none; visibility: hidden">
-              <p><span></span></p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Unnamed (Rectangle) -->
-      <div id="u26" class="ax_default paragraph">
-        <div id="u26_div" class=""></div>
-        <!-- Unnamed () -->
-        <div id="u27" class="text">
-          <p><span>商品编码</span></p>
-        </div>
-      </div>
-
-      <!-- Unnamed (Text Field) -->
-      <div id="u28" class="ax_default text_field">
-        <input id="u28_input" type="text" value="a001"/>
-      </div>
-
-      <!-- Unnamed (Rectangle) -->
-      <div id="u29" class="ax_default paragraph">
-        <div id="u29_div" class=""></div>
-        <!-- Unnamed () -->
-        <div id="u30" class="text">
-          <p><span>秒杀价格</span></p>
-        </div>
-      </div>
-
-      <!-- Unnamed (Text Field) -->
-      <div id="u31" class="ax_default text_field">
-        <input id="u31_input" type="text" value="1999"/>
-      </div>
-
-      <!-- Unnamed (Rectangle) -->
-      <div id="u32" class="ax_default paragraph">
-        <div id="u32_div" class=""></div>
-        <!-- Unnamed () -->
-        <div id="u33" class="text">
-          <p><span>描述</span></p>
-        </div>
-      </div>
-
-      <!-- Unnamed (HTML Button) -->
-      <div id="u34" class="ax_default html_button">
-        <input id="u34_input" type="submit" value="提交"/>
-      </div>
-
-      <!-- Unnamed (Rectangle) -->
-      <div id="u35" class="ax_default paragraph">
-        <div id="u35_div" class=""></div>
-        <!-- Unnamed () -->
-        <div id="u36" class="text">
-          <p><span>开始时间</span></p>
-        </div>
-      </div>
-
-      <!-- Unnamed (Text Field) -->
-      <div id="u37" class="ax_default text_field">
-        <input id="u37_input" type="date" value="2017-07-01"/>
-      </div>
-
-      <!-- Unnamed (Rectangle) -->
-      <div id="u38" class="ax_default paragraph">
-        <div id="u38_div" class=""></div>
-        <!-- Unnamed () -->
-        <div id="u39" class="text">
-          <p><span>结束时间</span></p>
-        </div>
-      </div>
-
-      <!-- Unnamed (Text Field) -->
-      <div id="u40" class="ax_default text_field">
-        <input id="u40_input" type="date" value="2017-09-01"/>
-      </div>
-
-      <!-- Unnamed (Rectangle) -->
-      <div id="u41" class="ax_default paragraph">
-        <div id="u41_div" class=""></div>
-        <!-- Unnamed () -->
-        <div id="u42" class="text">
-          <p><span>库存</span></p>
-        </div>
-      </div>
-
-      <!-- Unnamed (Text Field) -->
-      <div id="u43" class="ax_default text_field">
-        <input id="u43_input" type="number" value="5000"/>
-      </div>
-
-      <!-- Unnamed (Text Area) -->
-      <div id="u44" class="ax_default text_area">
-        <textarea id="u44_input">商品详情描述信息
-....
-.....
-.....</textarea>
-      </div>
-
-      <!-- Unnamed (Rectangle) -->
       <div id="u45" class="ax_default paragraph">
         <div id="u45_div" class=""></div>
         <!-- Unnamed () -->
@@ -178,48 +72,28 @@
           <p><span>请在此添加活动秒杀商品，并在商品管理里面上架！</span></p>
         </div>
       </div>
-
-      <!-- Unnamed (Rectangle) -->
-      <div id="u47" class="ax_default paragraph">
-        <div id="u47_div" class=""></div>
-        <!-- Unnamed () -->
-        <div id="u48" class="text">
-          <p><span>商品名称</span></p>
-        </div>
-      </div>
-
-      <!-- Unnamed (Text Field) -->
-      <div id="u49" class="ax_default text_field">
-        <input id="u49_input" type="text" value="小米手机5 puls"/>
-      </div>
-
-      <!-- Unnamed (Rectangle) -->
-      <div id="u50" class="ax_default paragraph">
-        <div id="u50_div" class=""></div>
-        <!-- Unnamed () -->
-        <div id="u51" class="text">
-          <p><span>市场价格</span></p>
-        </div>
-      </div>
-
-      <!-- Unnamed (Text Field) -->
-      <div id="u52" class="ax_default text_field">
-        <input id="u52_input" type="text" value="2299"/>
-      </div>
-
-      <!-- Unnamed (Rectangle) -->
-      <div id="u53" class="ax_default paragraph">
-        <div id="u53_div" class=""></div>
-        <!-- Unnamed () -->
-        <div id="u54" class="text">
-          <p><span>图片</span></p>
-        </div>
-      </div>
-
-      <!-- Unnamed (Text Field) -->
-      <div id="u55" class="ax_default text_field">
-        <input id="u55_input" type="file" value=""/>
-      </div>
+      <form id="base" class="" th:action="@{~/admin/store}" method="post">
+        <input type="hidden" name="id" th:field="${seckillProduct.seckillId}"/>
+        商品编码：<input type="text" name="name" th:field="${seckillProduct.productCode}"/><br/>
+        <br/>
+        商品名称：<input type="text" name="name" th:field="${seckillProduct.name}"/><br/>
+        <br/>
+        市场价格：<input type="text" name="name" th:field="${seckillProduct.name}"/><br/>
+        <br/>
+        秒杀价格：<input type="text" name="name" th:field="${seckillProduct.seckillPrice}"/><br/>
+        <br/>
+        开始时间：<input type="text" name="name" th:field="${seckillProduct.createTime}"/><br/>
+        <br/>
+        结束时间：<input type="text" name="name" th:field="${seckillProduct.endTime}"/><br/>
+        <br/>
+        库存：&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="name" th:field="${seckillProduct.productStocks}"/><br/>
+        <br/>
+        图片：&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="name" th:field="${seckillProduct.productImg}"/><br/>
+        <br/>
+        描述：&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="name" th:field="${seckillProduct.productDescription}"/><br/>
+        <br/>
+        <input type="submit" value="提交"/>
+      </form>
     </div>
   </body>
 </html>
