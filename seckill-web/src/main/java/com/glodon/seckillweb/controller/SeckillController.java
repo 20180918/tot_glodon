@@ -1,19 +1,16 @@
 package com.glodon.seckillweb.controller;
 
 import com.glodon.seckillcommon.domain.SeckillProduct;
-import com.glodon.seckillcommon.domain.SuccessKilled;
 import com.glodon.seckillcommon.exception.ClosedSeckillException;
 import com.glodon.seckillcommon.exception.RepeatSeckillException;
 import com.glodon.seckillweb.dto.SeckillExecution;
 import com.glodon.seckillweb.dto.SeckillResult;
 import com.glodon.seckillweb.dto.UrlExposer;
-import com.glodon.seckillweb.mapper.SuccessKilledDAO;
 import com.glodon.seckillweb.service.SeckillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.util.List;
@@ -30,8 +27,6 @@ public class SeckillController {
 
     @Autowired
     private SeckillService seckillService;
-    @Autowired
-    private SuccessKilledDAO successKilledDAO;
 
     /**
      * 秒杀列表 (http://localhost:8080/seckill/list)
@@ -47,6 +42,13 @@ public class SeckillController {
         return "list";
     }
 
+    /**
+     * 查询单个商品的详情
+     *
+     * @param seckillId
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/detail/{seckillId}", method = RequestMethod.GET)
     public String detail(@PathVariable("seckillId") String seckillId, Model model) {
         if (seckillId == null) {
@@ -59,6 +61,7 @@ public class SeckillController {
         model.addAttribute("seckillProduct", seckillProduct);
         return "detail";
     }
+
     /**
      * 获取系统时间
      *
@@ -71,10 +74,10 @@ public class SeckillController {
         return new SeckillResult(true, now.getTime());
     }
 
-    //    //http://localhost:8080//seckill//exposer/1000
 
     /**
-     * 暴露秒杀接口
+     * 暴露秒杀接口 (http://localhost:8080//seckill//exposer/1000)
+     *
      * @param seckillId
      * @return
      */
@@ -92,9 +95,9 @@ public class SeckillController {
         return result;
     }
 
-    //    //http://localhost:8080//1000/b0188b59a2abb4879b4f70dd41bae625/execution
     /**
      * 执行秒杀
+     *
      * @param seckillId
      * @param md5
      * @param userPhone
@@ -106,32 +109,23 @@ public class SeckillController {
     @ResponseBody
     public SeckillResult<SeckillExecution> execute(@PathVariable("seckillId") Long seckillId,
                                                    @PathVariable("md5") String md5,
-                                                   @PathVariable("userPhone") String userPhone)
-    {
-        if (userPhone==null)
-        {
-            return new SeckillResult<SeckillExecution>(false,"未注册");
+                                                   @PathVariable("userPhone") String userPhone) {
+        if (userPhone == null) {
+            return new SeckillResult<SeckillExecution>(false, "未注册");
         }
-        SeckillResult<SeckillExecution> result;
-
         try {
             SeckillExecution execution = seckillService.doSeckill(String.valueOf(seckillId), String.valueOf(userPhone), md5);
             return new SeckillResult<SeckillExecution>(true, execution);
-        }catch (ClosedSeckillException e)
-        {
-            SeckillExecution execution=new SeckillExecution(seckillId,401);
-            return new SeckillResult<SeckillExecution>(true,execution);
-        }catch (RepeatSeckillException e2)
-        {
-            SeckillExecution execution=new SeckillExecution(seckillId, 402);
-            return new SeckillResult<SeckillExecution>(true,execution);
+        } catch (ClosedSeckillException e) {
+            SeckillExecution execution = new SeckillExecution(seckillId, 401);
+            return new SeckillResult<SeckillExecution>(true, execution);
+        } catch (RepeatSeckillException e2) {
+            SeckillExecution execution = new SeckillExecution(seckillId, 402);
+            return new SeckillResult<SeckillExecution>(true, execution);
+        } catch (Exception e) {
+            SeckillExecution execution = new SeckillExecution(seckillId, 400);
+            return new SeckillResult<SeckillExecution>(true, execution);
         }
-        catch (Exception e)
-        {
-            SeckillExecution execution=new SeckillExecution(seckillId, 400);
-            return new SeckillResult<SeckillExecution>(true,execution);
-        }
-
     }
 
 }

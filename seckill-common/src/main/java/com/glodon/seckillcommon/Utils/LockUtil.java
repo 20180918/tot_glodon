@@ -13,7 +13,7 @@ import redis.clients.jedis.Jedis;
  */
 public class LockUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(LockUtil.class);
-    static Jedis redis = RedisUtil.getJedis();
+    static Jedis redis = com.glodon.seckillcommon.utils.RedisUtil.getJedis();
     static Integer expireTime = 50;
     static Long exTime = Long.valueOf(expireTime * 1000);
 

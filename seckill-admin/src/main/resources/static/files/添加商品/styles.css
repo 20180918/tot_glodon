@@ -11,6 +11,10 @@
 #base {
   position:absolute;
   z-index:0;
+  left:50px;
+  width:500px;
+  margin-top: 200px;
+  margin-left: 100px;
 }
 #u14_div {
   border-width:0px;
@@ -551,7 +555,7 @@
   position:absolute;
   left:0px;
   top:0px;
-  width:530px;
+  width:300px;
   word-wrap:break-word;
 }
 #u47_div {
@@ -712,4 +716,13 @@
   text-decoration:none;
   color:#000000;
   text-align:left;
+}
+
+#u100 {
+  border-width:0px;
+  position:absolute;
+  left:240px;
+  top:130px;
+  width:530px;
+  height:27px;
 }

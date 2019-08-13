@@ -1,8 +1,6 @@
 package com.glodon.seckillweb.service.impl;
 
 import com.glodon.seckillcommon.Utils.LockUtil;
-import com.glodon.seckillcommon.Utils.RedisUtil;
-import com.glodon.seckillcommon.Utils.SerializationUtil;
 import com.glodon.seckillcommon.domain.SeckillProduct;
 import com.glodon.seckillcommon.domain.SuccessKilled;
 import com.glodon.seckillcommon.exception.ClosedSeckillException;
@@ -44,13 +42,13 @@ public class SeckillServiceImpl implements SeckillService {
     public SeckillProduct selectBySeckillId(String seckillId, boolean fastsearch) {
         if (fastsearch) {
             String key = "product_detail" + seckillId;
-            String redisObject = RedisUtil.get(key);
+            String redisObject = com.glodon.seckillcommon.utils.RedisUtil.get(key);
             if (redisObject == null) {
                 SeckillProduct seckillProduct = seckillProductDAO.selectByPrimaryKey(seckillId);
-                RedisUtil.setExpire(key.getBytes(), SerializationUtil.serialize(seckillProduct),60);
+                com.glodon.seckillcommon.utils.RedisUtil.setExpire(key.getBytes(), com.glodon.seckillcommon.utils.SerializationUtil.serialize(seckillProduct),60);
                 return seckillProduct;
             } else {
-                return (SeckillProduct) SerializationUtil.deserialize(RedisUtil.get(key.getBytes()));
+                return (SeckillProduct) com.glodon.seckillcommon.utils.SerializationUtil.deserialize(com.glodon.seckillcommon.utils.RedisUtil.get(key.getBytes()));
             }
         } else {
             SeckillProduct seckillProduct = seckillProductDAO.selectByPrimaryKey(seckillId);

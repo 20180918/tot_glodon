@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>录入客户信息</title>
+</head>
+<body>
+<form th:action="@{~/product/update}" method="post">
+    <input type="hidden"  name="seckillId" th:field="${pro.seckillId}"/><br/>
+    <input type="hidden"  name="productCode" th:field="${pro.productCode}"/><br/>
+    <input type="hidden"  name="startTime" th:field="${pro.startTime}"/><br/>
+    商品名称：<input type="text" name="name" th:field="${pro.name}"/><br/>
+    秒杀价格：<input type="text" name="seckillPrice" th:field="${pro.seckillPrice}"/><br/>
+    商品库存：<input type="text" name="productStock" th:field="${pro.number}"/><br/>
+    商品状态：<input type="text" name="productState" th:field="${pro.productState}"/><br/>
+    <input type="submit" value="提交"/>
+
+</form>
+</body>
+</html>

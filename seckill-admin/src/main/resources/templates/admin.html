@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#appendimg").html("")
+            var imgurl = "'user_admin/createImage?'+(new Date()).getTime();"
+            var str = "<img   id=\"img\" src=" + imgurl + " alt=\"验证666码\" title=\"点击更换\"\n" +
+                "                     onclick=\"this.src=" + imgurl + "\"/>";
+            $("#appendimg").append(str)
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#login").click(function () {
+                var url = "/login"
+                var json = {
+                    "username": $("#username").val(),
+                    "password": $("#password").val(),
+                    "checkcode": $("#checkcode").val()
+                };
+
+                var s = $("#username").val();
+                var w = $("#password").val();
+                var t = $("#checkcode").val()
+                if ($("#username").val() == "") {
+                    alert("用户名不能为空")
+                } else if ($("#password").val() == "") {
+                    alert("密码不能为空")
+                } else {
+                    var url = 'http://localhost:8080/user_admin/login?username=' + s + '&password=' + w + '&checkcode=' + t + ''
+                }
+
+            })
+        })
+    </script>
+</head>
+
+<body>
+<div align="center" style="margin-top: 150px">
+    <form action="/user_admin/login" method="get">
+        <tr>
+            用户名：<input type="text" name="username" id="username"></br></br>
+            密&nbsp &nbsp码：<input type="password" name="password" id="password"></br></br>
+            <td>验证码：</td>
+            <td class="width50"><input id="checkcode" name="checkcode" type="text" class="width50"/></td>
+            <td><span id="checkcode_msg" class="required"></span></td>
+        </tr>
+
+        <input type="submit" value="登录" id="login">
+
+    </form>
+    <span id="appendimg" class="appendimg"></span>
+</div>
+</body>
+</html>
