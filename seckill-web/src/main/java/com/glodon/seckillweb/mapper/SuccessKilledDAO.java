@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * SuccessKilledDAO继承基类
@@ -28,5 +29,7 @@ public interface SuccessKilledDAO extends MyBatisBaseDao<SuccessKilled, SuccessK
      * @return
      */
     SuccessKilled queryByIdWithSeckill(@Param("seckillId") String seckillId,@Param("userPhone") String userPhone);
+
+    List<SuccessKilled> selectByPhone (@Param("userPhone") String userPhone);
 
 }

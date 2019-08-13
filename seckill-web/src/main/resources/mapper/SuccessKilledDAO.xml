@@ -23,6 +23,11 @@
         from success_killed where seckill_id = #{seckillId} and user_phone =#{userPhone};
     </select>
 
+    <select id="selectByPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from success_killed where user_phone =#{userPhone};
+    </select>
     <select id="selectByPrimaryKey" parameterType="com.glodon.seckillcommon.domain.SuccessKilledKey"
             resultMap="BaseResultMap">
         select
