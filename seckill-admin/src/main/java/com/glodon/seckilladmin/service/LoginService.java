@@ -1,6 +1,8 @@
 package com.glodon.seckilladmin.service;
 
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @author lic-s
  */
@@ -14,7 +16,7 @@ public interface LoginService {
      * @param va
      * @return
      */
-    boolean validate(String code, String name, String password, String va) throws Exception;
+    boolean validate(HttpServletResponse response, String code, String name, String password, String va) throws Exception;
 
 
 }

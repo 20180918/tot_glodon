@@ -14,6 +14,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.sql.ResultSet;
 import java.util.Random;
 
 /**
@@ -42,9 +44,9 @@ public class AdminLoginController {
      * @throws Exception
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(@RequestParam(value = "username") String username, String password, String checkcode, HttpSession session) throws Exception {
+    public String login(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "username") String username, String password, String checkcode, HttpSession session) throws Exception {
         String code = (String) session.getAttribute("code");
-        boolean flag = loginService.validate(code, username, password, checkcode);
+        boolean flag = loginService.validate(response,code, username, password, checkcode);
         if (flag) {
             return "redirect:/admin/add";
         }

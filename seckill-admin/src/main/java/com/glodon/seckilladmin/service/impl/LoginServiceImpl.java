@@ -1,10 +1,13 @@
-package com.glodon.seckilladmin.service.Impl;
+package com.glodon.seckilladmin.service.impl;
 
 import com.glodon.seckilladmin.domain.UserAdmin;
 import com.glodon.seckilladmin.mapper.UserAdminMapper;
 import com.glodon.seckilladmin.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 
 
 /**
@@ -25,9 +28,16 @@ public class LoginServiceImpl implements LoginService {
      * @return
      */
     @Override
-    public boolean validate(String code, String name, String password, String checkcode) throws Exception {
+    public boolean validate(HttpServletResponse response, String code, String name, String password, String checkcode) throws Exception {
         UserAdmin userAdmin = userAdminMapper.selectByRootName(name);
+        response.setContentType("text/html; charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        out.flush();
+        out.println("<script>");
         if (userAdmin == null) {
+            out.println("alert('用户名或密码不正确');");
+            out.println("history.back();");
+            out.println("</script>");
             return false;
         }
         String uName = userAdmin.getRootName();
@@ -35,6 +45,9 @@ public class LoginServiceImpl implements LoginService {
         if (name.equals(uName) && password.equals(uPassword) && code.equals(checkcode)) {
             return true;
         } else {
+            out.println("alert('验证码不正确');");
+            out.println("history.back();");
+            out.println("</script>");
             return false;
         }
     }
