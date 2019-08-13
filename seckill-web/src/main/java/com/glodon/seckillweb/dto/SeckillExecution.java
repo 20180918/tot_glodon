@@ -1,6 +1,5 @@
 package com.glodon.seckillweb.dto;
 
-import com.glodon.seckillcommon.domain.SuccessKilled;
 
 /**
  * 描述:
@@ -12,7 +11,9 @@ import com.glodon.seckillcommon.domain.SuccessKilled;
 public class SeckillExecution {
     private long seckillId;
 
-    //秒杀执行结果的状态
+    /**
+     * 秒杀执行结果的状态
+     */
     private int state;
 
     public SeckillExecution(long seckillId, int state) {
