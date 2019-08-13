@@ -17,6 +17,10 @@ import java.util.UUID;
 public class AddProductServiceImpl implements AddProductService {
     @Resource
     private SeckillProductDAO seckillProductMapper;
+    private String uri;
+    public String getUri() {
+        return uri;
+    }
     @Override
     public String save(@RequestParam("productImg") MultipartFile multipartFile) {
         try {
@@ -24,13 +28,18 @@ public class AddProductServiceImpl implements AddProductService {
             String imageName = UUID.randomUUID().toString();
             QiNiuCloudUtil qiNiuCloudUtil = new QiNiuCloudUtil();
             //使用base64方式上传到七牛云
-            String url = qiNiuCloudUtil.put64image(bytes, imageName);
-            System.out.println("上传成功");
+            uri = qiNiuCloudUtil.put64image(bytes, imageName);
             return imageName;
         } catch (Exception e) {
             e.printStackTrace();
         }
        // seckillProductMapper.insert(seckillProduct);
         return "上传成功";
+    }
+
+    @Override
+    public void store(SeckillProduct seckillProduct) {
+        seckillProduct.setProductImg(getUri());
+        seckillProductMapper.insert(seckillProduct);
     }
 }
