@@ -1,4 +1,15 @@
 spring:
+  kafka:
+    bootstrap-servers: 192.168.126.128:9092
+    consumer:
+      client-id: 0
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      batch-size: 65536
+      buffer-memory: 524288
   servlet:
     multipart:
       enabled: true

@@ -89,7 +89,6 @@ public class SeckillController {
         } catch (Exception e) {
             result = new SeckillResult<UrlExposer>(false, e.getMessage());
         }
-        System.out.println("success"+result);
         return result;
     }
 
