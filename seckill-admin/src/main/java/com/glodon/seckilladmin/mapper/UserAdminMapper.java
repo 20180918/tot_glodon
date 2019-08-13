@@ -1,6 +1,7 @@
 package com.glodon.seckilladmin.mapper;
 
 import com.glodon.seckilladmin.domain.UserAdmin;
+import com.glodon.seckillcommon.domain.SeckillProduct;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -8,4 +9,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserAdminMapper extends MyBatisBaseDao<UserAdmin, Integer> {
+
 }

@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajax上传文件</title>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+    </script>
+</head>
+<body>
+上传图片：<input id="userface" type="file" onchange="preview(this)"><br>
+<div id="preview"></div>
+<input type="button" id="btnClick" value="上传图片">
+
+
+
+
+
+
+
+
+<script>
+    $("#btnClick").click(function () {
+        var formData = new FormData();
+        // formData.append("username", $("#username").val());
+        formData.append("productImg", $("#userface")[0].files[0]);
+        $.ajax({
+            url: 'http://localhost:8080//admin/store',
+            type: 'post',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (msg) {
+                alert(msg);
+            }
+        });
+    });
+    function preview(file) {
+        var prevDiv = document.getElementById('preview');
+        if (file.files && file.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (evt) {
+                prevDiv.innerHTML = '<img src="' + evt.target.result + '" />';
+            }
+            reader.readAsDataURL(file.files[0]);
+        } else {
+            prevDiv.innerHTML = '<div class="img" style="filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src=\'' + file.value + '\'"></div>';
+        }
+    }
+</script>
+</body>
+</html>
