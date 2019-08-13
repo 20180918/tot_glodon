@@ -4,28 +4,29 @@
     <title>秒杀详情页</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
-<body>
+<body style="background-color: #060625;">
 
 
 <div class="container">
     <div style="height: 30px;"></div>
 
-    <div class="panel panel-default text-center row clearfix">
-        <div class="panel-heading text-center">
+    <div class="panel panel-default text-center row clearfix" style="box-shadow: 5px 10px 15px #FFFFFF">
+        <div class="panel-heading text-center" >
             <h4>秒杀详情</h4>
         </div>
-        <div class="col-md-12 column">
+        <div class="col-md-12 column" >
             <div class="row clearfix panel-body">
                 <div class="pannel-heading col-md-6 column">
                     <img th:src="${seckillProduct.productImg}" th:width="400px" style="border-radius: 10px">
                 </div>
 
                 <div class="pannel-heading col-md-6 column">
-                    <h1 th:text="${seckillProduct.name}"></h1>
-                    <s><h2 th:text="'市场价格：￥'+${seckillProduct.productPrice}"></h2></s>
-                    <h1 th:text="${'秒杀价格：'+seckillProduct.seckillPrice}"></h1>
-                    <h2 th:text="${'剩余库存：'+seckillProduct.number}"></h2>
+                    <h2 th:text="${seckillProduct.name}"></h2>
+                    <s><h3 th:text="'市场价格：￥'+${seckillProduct.productPrice}"></h3></s>
+                    <h4 th:text="${'秒杀价格：'+seckillProduct.seckillPrice}"></h4>
+                    <h4 th:text="${'剩余库存：'+seckillProduct.number}"></h4>
                     <h4 th:text="${'活动时间：'+seckillProduct.startTime}+'~'+${seckillProduct.endTime}"></h4>
                 </div>
 

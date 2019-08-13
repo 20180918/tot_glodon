@@ -103,7 +103,14 @@ public class SeckillServiceImpl implements SeckillService {
                     throw new ClosedSeckillException("seckill is closed");
                 } else {
                     //秒杀成功,得到成功插入的明细记录,并返回成功秒杀的信息 commit
-                    SuccessKilled successKilled = successKilledDAO.queryByIdWithSeckill(seckillId, userPhone);
+                    SeckillProduct seckillProduct= seckillProductDAO.selectByPrimaryKey(seckillId);
+                    SuccessKilled successKilled = new SuccessKilled();
+                    successKilled.setProductName(seckillProduct.getName());
+                    successKilled.setSeckillPrice(seckillProduct.getSeckillPrice());
+                    successKilled.setState((byte) 0);
+                    successKilled.setUserPhone(Long.parseLong(userPhone));
+                    successKilled.setSeckillId(Long.parseLong(seckillId));
+                    successKilledDAO.updateByPrimaryKey(successKilled);
                     return new SeckillExecution(Long.parseLong(seckillId),200);
                 }
             }
