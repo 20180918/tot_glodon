@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>商品管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <link href="../static/resources/css/jquery-ui-themes.css" type="text/css" rel="stylesheet"/>
+    <link href="../static/resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="../static/data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="../static/files/商品管理/styles.css" type="text/css" rel="stylesheet"/>
+    <script src="../static/resources/scripts/jquery-1.7.1.min.js"></script>
+    <script src="../static/resources/scripts/jquery-ui-1.8.10.custom.min.js"></script>
+    <script src="../static/resources/scripts/prototypePre.js"></script>
+    <script src="../static/data/document.js"></script>
+    <script src="../static/resources/scripts/prototypePost.js"></script>
+    <script src="../static/files/商品管理/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+    <h1>商品管理</h1>
+  商品编码：<input th:type="text" id="proCodeId"/>
+  <table border="1" style="width: 500px;">
+    <tr>
+      <td></td>
+      <td>商品编号</td>
+      <td>商品名称</td>
+      <td>状态</td>
+      <td>秒杀价格</td>
+      <td>剩余库存</td>
+      <td>操作</td>
+    </tr>
+    <tr th:each='pro:${listVo}'>
+<!--      <td><input name="Fruit" type="checkbox" value="" /></td>-->
+      <td th:text="${pro.productCode}"></td>
+      <td th:text="${pro.name}"></td>
+      <td th:text="${pro.productState}"></td>
+      <td th:text="${pro.seckillPrice}"></td>
+      <td th:text="${pro.number}"></td>
+      <td>
+<!--        <a th:href="@{/customer/findById(id=${listVo.productCode})}">编辑</a>&nbsp;-->
+<!--        <a th:href="@{/customer/delete(id=${cust.id})}">详情</a>-->
+      </td>
+    </tr>
+
+  </table>
+  </body>
+</html>

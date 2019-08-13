@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>商品管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <link href="../static/resources/css/jquery-ui-themes.css" type="text/css" rel="stylesheet"/>
+    <link href="../static/resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="../static/data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="../static/files/商品管理/styles.css" type="text/css" rel="stylesheet"/>
+    <script src="../static/resources/scripts/jquery-1.7.1.min.js"></script>
+    <script src="../static/resources/scripts/jquery-ui-1.8.10.custom.min.js"></script>
+    <script src="../static/resources/scripts/prototypePre.js"></script>
+    <script src="../static/data/document.js"></script>
+    <script src="../static/resources/scripts/prototypePost.js"></script>
+    <script src="../static/files/商品管理/data.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+      <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+      </script>
+
+    <h1>商品管理</h1>
+      <form action="/product/select">
+      商品编码：<input th:type="text" id="proCodeId" name="productCode"/>
+      </br>
+      商品名称：<input th:type="text" id="proNameId" name="name"/>
+      </br>
+      商品状态：<select id="select1" name="productState">
+          <option value ="" >全部</option>
+          <option value ="1">已上架</option>
+          <option value="0">未上架</option>
+          <option value="-1">已下架</option>
+          </select>
+      </br>
+          <button onclick="submit" >查询</button>
+
+      </form>
+  <table border="1" style="width: 500px;">
+    <tr>
+      <td></td>
+      <td>商品编号</td>
+      <td>商品名称</td>
+      <td>状态</td>
+      <td>秒杀价格</td>
+      <td>剩余库存</td>
+      <td>操作</td>
+    </tr>
+    <tr th:each='pro:${listVo}'>
+        <td></td>
+      <td th:text="${pro.productCode}"></td>
+      <td th:text="${pro.name}"></td>
+<!--      <td th:if="${pro.productState==0}" th:text="未上架"></td>-->
+        <div class="top" th:switch="${pro.productState}">
+            <td th:case=0 th:text="未上架"></td>
+            <td th:case=-1 th:text="已下架"></td>
+            <td th:case=1 th:text="已上架"></td>
+        </div>
+      <td th:text="${pro.seckillPrice}"></td>
+      <td th:text="${pro.number}"></td>
+      <td>
+          <div id="editId" >
+              <a >详情</a>
+              <div th:if="${pro.productState} eq '0'">
+                  <a th:href="@{/product/findByProCode(productCode=${pro.productCode})}">编辑</a>&nbsp;
+              <div>
+
+      </td>
+    </tr>
+  </table>
+      <tr>
+          <td>
+              <a th:href="@{/product/select(page=${prepage})}">上一页</a>
+          </td>
+          <td>
+              <a th:href="@{/product/select(page=${nextpage})}">下一页</a>
+          </td>
+      </tr>
+      </br>
+<!--      <span th:each="propage:${pagelist}">-->
+<!--                <a th:href="@{/product/select(page=${propage})}"><span th:text="${propage}"></span></a>-->
+<!--      </span>-->
+      <span>
+          </br>
+          当前第<span th:text="${currentpage}"></span>页 &nbsp&nbsp&nbsp
+<!--          共<span th:text="${totle}"></span>页-->
+    </span>
+  </body>
+</html>

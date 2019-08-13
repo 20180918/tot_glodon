@@ -20,6 +20,33 @@
     seckill_id, `name`, `number`, start_time, end_time, create_time, product_code, product_price, 
     seckill_price, product_description, product_img, product_state, product_stocks
   </sql>
+  <sql id="Show_Base_Column_List">
+    `name`, `number`, product_code, seckill_price,  product_state,
+  </sql>
+  <select id="selectMul" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from seckill_product
+    where 1=1
+
+      <if test="productCode != null">
+      and product_code = #{productCode,jdbcType=VARCHAR}
+      </if>
+      <if test="name != null">
+      and name like '%${name}%'
+      </if>
+      <if test="productState != null">
+        and product_state= #{productState,jdbcType=INTEGER }
+      </if>
+
+
+  </select>
+  <select id="selectByProductCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from seckill_product
+    where product_Code = #{ProductCode,jdbcType=VARCHAR}
+  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
