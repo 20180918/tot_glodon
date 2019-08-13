@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Ajax上传文件</title>
+    <title>添加商品</title>
     <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
     </script>
 </head>
@@ -26,19 +26,14 @@
               th:field="${seckillProduct.productDescription}"/><br/>
     <input type="submit"  value="提交"/>
 </form>
-
-
-
-
-
-
 <script>
     $("#btnClick").click(function () {
         var formData = new FormData();
         // formData.append("username", $("#username").val());
         formData.append("productImg", $("#userface")[0].files[0]);
         $.ajax({
-            url: 'http://localhost:8080/admin/store_img',
+            // url: 'http://localhost:8090/admin/store_img',
+            url: '/admin/store_img',
             type: 'post',
             data: formData,
             processData: false,

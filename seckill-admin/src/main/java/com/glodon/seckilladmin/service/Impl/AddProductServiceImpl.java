@@ -11,6 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Date;
+import java.util.Random;
 import java.util.UUID;
 
 @Service
@@ -39,6 +41,13 @@ public class AddProductServiceImpl implements AddProductService {
 
     @Override
     public void store(SeckillProduct seckillProduct) {
+        //让所有字段不为空
+        Random rd = new Random();
+        String product_id = String.valueOf(System.currentTimeMillis());
+        seckillProduct.setSeckillId(product_id);
+        seckillProduct.setProductStocks(100000);
+        seckillProduct.setCreateTime(new Date());
+        seckillProduct.setProductState(-1);
         seckillProduct.setProductImg(getUri());
         seckillProductMapper.insert(seckillProduct);
     }

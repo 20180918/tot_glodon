@@ -25,7 +25,7 @@ public class QiNiuCloudUtil {
     // 密钥
     private static final Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
     //图片上传路径
-    private static final String DOMAIN = "pw5tbmfil.bkt.clouddn.com/";
+    private static final String DOMAIN = "http://pw5tbmfil.bkt.clouddn.com/";
     //自定义图片样式
     private static final String style = "jpg";
 
