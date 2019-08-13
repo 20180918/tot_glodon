@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserAdminMapper extends MyBatisBaseDao<UserAdmin, Integer> {
+    UserAdmin selectByRootName(String name);
 }
