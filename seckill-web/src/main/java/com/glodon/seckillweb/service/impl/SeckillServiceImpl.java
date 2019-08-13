@@ -1,5 +1,6 @@
 package com.glodon.seckillweb.service.impl;
 
+import com.glodon.seckillcommon.Utils.LockUtil;
 import com.glodon.seckillcommon.Utils.RedisUtil;
 import com.glodon.seckillcommon.Utils.SerializationUtil;
 import com.glodon.seckillcommon.domain.SeckillProduct;
@@ -46,7 +47,7 @@ public class SeckillServiceImpl implements SeckillService {
             String redisObject = RedisUtil.get(key);
             if (redisObject == null) {
                 SeckillProduct seckillProduct = seckillProductDAO.selectByPrimaryKey(seckillId);
-                RedisUtil.set(key.getBytes(), SerializationUtil.serialize(seckillProduct));
+                RedisUtil.setExpire(key.getBytes(), SerializationUtil.serialize(seckillProduct),60);
                 return seckillProduct;
             } else {
                 return (SeckillProduct) SerializationUtil.deserialize(RedisUtil.get(key.getBytes()));
@@ -96,8 +97,14 @@ public class SeckillServiceImpl implements SeckillService {
             if (insertCount <= 0) {
                 throw new RepeatSeckillException("seckill repeated");
             } else {
-                //减库存,热点商品竞争
-                int updateCount = seckillProductDAO.reduceNumber(seckillId, nowTime);
+                int updateCount=0;
+                //减库存
+                if(LockUtil.lock(seckillId)){
+                    updateCount = seckillProductDAO.reduceNumber(seckillId, nowTime);
+                    LockUtil.unLock(seckillId);
+                }else {
+                    return doSeckill(seckillId,userPhone,md5);
+                }
                 if (updateCount <= 0) {
                     //没有更新库存记录，说明秒杀结束 rollback
                     throw new ClosedSeckillException("seckill is closed");
