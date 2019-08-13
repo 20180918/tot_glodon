@@ -9,7 +9,7 @@ package com.glodon.seckillcommon.exception;
  */
 
 public class ClosedSeckillException extends RuntimeException {
-    private String erCode ="500";  //异常对应的返回码
+    private String erCode ="401";  //异常对应的返回码
     private String erMessage="秒杀已经关闭";  //异常对应的描述信息
 
     public ClosedSeckillException() {

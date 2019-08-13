@@ -8,7 +8,7 @@ package com.glodon.seckillcommon.exception;
  * @create 2019-08-12 13:27
  */
 public class RepeatSeckillException extends RuntimeException{
-    private String erCode ="410";  //异常对应的返回码
+    private String erCode ="402";  //异常对应的返回码
     private String erMessage="禁止重复秒杀";  //异常对应的描述信息
 
     public RepeatSeckillException(){

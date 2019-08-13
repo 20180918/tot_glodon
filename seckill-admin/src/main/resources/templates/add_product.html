@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>添加商品</title>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+    </script>
+</head>
+<body>
+<!--上传图片：<input id="userface" type="file" onchange="preview(this)"><br>-->
+<!--<div id="preview"></div>-->
+<!--<input type="button" id="btnClick" value="上传图片">-->
+
+<form id="form" method="post" enctype="multipart/form-data" th:action="@{~/admin/store}">
+    商品编码：<input type="text" name="productCode" th:field="${seckillProduct.productCode}"/><br/>
+    商品名称：<input type="text" name="name" th:field="${seckillProduct.name}"/><br/>
+    市场价格：<input type="text" name="productPrice" th:field="${seckillProduct.productPrice}"/><br/>
+    秒杀价格：<input type="text" name="seckillPrice" th:field="${seckillProduct.seckillPrice}"/><br/>
+    开始时间：<input type="date" name="startTime" th:value="${seckillProduct.startTime}"/><br/>
+    结束时间: <input type="date" name="endTime" th:value="${seckillProduct.endTime}"/><br/>
+    库存：<input type="text" name="number" th:field="${seckillProduct.number}"/><br/>
+    上传图片：<input id="userface" type="file" onchange="preview(this)">
+    <div id="preview"></div>
+    <input type="button" id="btnClick" value="上传图片"><br/>
+    描述：<input type="text" rows="5" cols="20" name="productDescription"
+              th:field="${seckillProduct.productDescription}"/><br/>
+    <input type="submit"  value="提交"/>
+</form>
+<script>
+    $("#btnClick").click(function () {
+        var formData = new FormData();
+        // formData.append("username", $("#username").val());
+        formData.append("productImg", $("#userface")[0].files[0]);
+        $.ajax({
+            // url: 'http://localhost:8090/admin/store_img',
+            url: '/admin/store_img',
+            type: 'post',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (msg) {
+                alert(msg);
+            }
+        });
+    });
+    function preview(file) {
+        var prevDiv = document.getElementById('preview');
+        if (file.files && file.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (evt) {
+                prevDiv.innerHTML = '<img src="' + evt.target.result + '" />';
+            }
+            reader.readAsDataURL(file.files[0]);
+        } else {
+            prevDiv.innerHTML = '<div class="img" style="filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src=\'' + file.value + '\'"></div>';
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,5 +1,7 @@
 package com.glodon.seckillcommon.domain;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -27,11 +29,13 @@ public class SeckillProduct implements Serializable {
     /**
      * 秒杀开始时间
      */
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date startTime;
 
     /**
      * 秒杀结束时间
      */
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date endTime;
 
     /**
