@@ -1,5 +1,6 @@
 spring:
   redis:
+<<<<<<< HEAD
     jedis:
       pool:
         max-wait: 5000
@@ -8,6 +9,16 @@ spring:
     cluster:
       nodes: 127.0.0.1:10001,127.0.0.1:10002,127.0.0.1:10003,127.0.0.1:10004,127.0.0.1:10005,127.0.0.1:10006
     timeout: 500
+=======
+    clusterNodes: 10.1.84.22:10001,10.1.84.22:10002,10.1.84.22:10003,10.1.84.22:10004,10.1.84.22:10005
+    expireSeconds: 120
+    commandTimeout: 10000  #redis操作的超时时间
+    pool:
+      maxActive: 5000 #最大连接数
+      maxIdle: 30 #最大空闲连接数
+      minIdle: 5 #最小空闲连接数
+      maxWait: 3000  #获取连接最大等待时间 ms  #default -1
+>>>>>>> af8bf653660c1cb8e4859f262de000f7be00bb55
   kafka:
     bootstrap-servers: 10.1.84.22:9092,10.1.84.22:9093,10.1.84.22:9094
     consumer:
