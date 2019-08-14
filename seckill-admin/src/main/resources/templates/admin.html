@@ -13,10 +13,13 @@
             var pos = curWwwPath.indexOf(pathName);
             //获取主机地址，如： http://localhost:8083
             var localhostPaht = curWwwPath.substring(0, pos);
-            var imgurl =localhostPaht+ "/user_admin/createImage?'+(new Date()).getTime();"
-            var str = "<img   id=\"img\" src=" + imgurl + " alt=\"验证666码\" title=\"点击更换\"\n" +
-                "                     onclick=\"this.src=" + imgurl + "\"/>";
-            $("#appendimg").append(str)
+            var imgurl =localhostPaht+ "/user_admin/createImage?"+(new Date()).getTime();
+            var img = $('<img>').attr('src',imgurl);
+            $("#appendimg").append(img);
+            img.on('click', function () {
+                $(this).attr('src', imgurl);
+            })
+
         });
     </script>
 
