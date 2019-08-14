@@ -93,6 +93,15 @@ public class SeckillProController {
     public String updateBatch(@Param("idList") String idList) {
         List<String> list = JSONObject.parseArray(idList, String.class);
         System.out.print(list);
+        for (String s : list) {
+            SeckillProduct secKillPro = secKillProService.findByProductCode(s);
+            System.out.print(secKillPro);
+            if (secKillPro.getProductState()== -1||secKillPro.getNumber()==0){
+                System.out.println("............................");
+                return "productManage";
+            }
+        }
+        System.out.print(list);
         secKillProService.updateBatch(list);
         //清除缓存
         for (String s : list) {
@@ -101,7 +110,7 @@ public class SeckillProController {
             com.glodon.seckillcommon.utils.RedisUtil.remove(key.getBytes());
         }
         System.out.print(list);
-        return "productManage/select";
+        return "productManage";
     }
 
     @RequestMapping("/updateBatchDown")
@@ -109,6 +118,12 @@ public class SeckillProController {
     public String updateBatchDown(@Param("idList") String idList) {
         List<String> list = JSONObject.parseArray(idList, String.class);
         System.out.print(list);
+        for (String s : list) {
+            SeckillProduct secKillPro = secKillProService.findByProductCode(s);
+            if (secKillPro.getProductState()== 0||secKillPro.getProductState()== -1){
+                return "productManage";
+            }
+        }
         secKillProService.updateBatchDown(list);
         //清除缓存
         for (String s : list) {
@@ -117,7 +132,7 @@ public class SeckillProController {
             com.glodon.seckillcommon.utils.RedisUtil.remove(key.getBytes());
         }
         System.out.print(list);
-        return "productManage/select";
+        return "productManage";
     }
 
 
