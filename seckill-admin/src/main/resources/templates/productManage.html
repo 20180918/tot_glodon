@@ -23,7 +23,10 @@
     </script>
       <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
       </script>
+  </head>
+  <body>
 <script>
+
     function Check() {
         var  TabObj = $("#Tab");
         //在table中找到input下类型为checkbox属性为选中状态的数据
@@ -71,13 +74,14 @@
               });
           }
       </script>
-    <h1>商品管理</h1>
+
+    <h1 align="center">商品管理</h1>
       <form action="/product/select">
-      商品编码：<input th:type="text" id="proCodeId" name="productCode"/>
+      商品编码：<input th:align="center" th:type="text" id="proCodeId" name="productCode"/>
       </br>
-      商品名称：<input th:type="text" id="proNameId" name="name"/>
+      商品名称：<input  th:align="center" th:type="text" id="proNameId" name="name"/>
       </br>
-      商品状态：<select id="select1" th:name="productState">
+      商品状态：<select  th:align="center" id="select1" th:name="productState">
           <option value ="" >全部</option>
           <option value ="1">已上架</option>
           <option value="0">未上架</option>
@@ -90,7 +94,7 @@
       <button onclick="Check()">批量上架</button>&nbsp&nbsp   <button onclick=" Check1()">批量下架</button>
 
       </br>
-  <table border="1" style="width: 500px;" id="Tab">
+  <table  border="2" style="width: 1000px;" id="Tab">
     <tr>
       <td></td>
       <td>商品编号</td>
@@ -129,20 +133,16 @@
   </table>
       <tr>
           <td>
-              <a th:href="@{/product/select(page=${prepage})}">上一页</a>
+              <a th:href="@{/product/select(page=${prepage})}">上一页</a>&nbsp&nbsp&nbsp
           </td>
+          第<span th:text="${currentpage}"></span>页 &nbsp&nbsp&nbsp
           <td>
               <a th:href="@{/product/select(page=${nextpage})}">下一页</a>
           </td>
       </tr>
       </br>
-<!--      <span th:each="propage:${pagelist}">-->
-<!--                <a th:href="@{/product/select(page=${propage})}"><span th:text="${propage}"></span></a>-->
-<!--      </span>-->
-      <span>
-          </br>
-          当前第<span th:text="${currentpage}"></span>页 &nbsp&nbsp&nbsp
-<!--          共<span th:text="${totle}"></span>页-->
-    </span>
+<td>
+    共 <span th:text="${totle}"></span>页
+</td>
   </body>
 </html>

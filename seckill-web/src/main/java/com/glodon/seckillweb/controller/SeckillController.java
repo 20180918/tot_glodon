@@ -127,7 +127,7 @@ public class SeckillController {
             return new SeckillResult<SeckillExecution>(true, execution);
         } catch (Exception e) {
             SeckillExecution execution = new SeckillExecution(seckillId, 400);
-            return new SeckillResult<SeckillExecution>(true, execution);
+            return new SeckillResult<SeckillExecution>(false, execution);
         }
     }
 

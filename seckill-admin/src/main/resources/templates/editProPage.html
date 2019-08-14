@@ -2,13 +2,14 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>录入客户信息</title>
+    <title>商品编辑</title>
 </head>
 <body>
+<h1  align="center">商品编辑</h1>
 <form th:action="@{~/product/update}" method="post">
     <input type="hidden"  name="seckillId" th:field="${pro.seckillId}"/><br/>
     <input type="hidden"  name="productCode" th:field="${pro.productCode}"/><br/>
-    <input type="hidden"  name="startTime" th:field="${pro.startTime}"/><br/>
+<!--    <input type="hidden"  name="startTime" th:field="${pro.startTime}"/><br/>-->
     商品名称：<input type="text" name="name" th:field="${pro.name}"/><br/>
     秒杀价格：<input type="text" name="seckillPrice" th:field="${pro.seckillPrice}"/><br/>
     商品库存：<input type="text" name="productStock" th:field="${pro.number}"/><br/>

@@ -1,5 +1,12 @@
 package com.glodon.seckillweb.task;
 
+import com.alibaba.fastjson.JSON;
+import com.glodon.seckillcommon.domain.SeckillProduct;
+import com.glodon.seckillcommon.domain.SuccessKilled;
+import com.glodon.seckillweb.dto.SeckillInfoContent;
+import com.glodon.seckillweb.mapper.SeckillProductDAO;
+import com.glodon.seckillweb.mapper.SuccessKilledDAO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
@@ -12,9 +19,23 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class KafkaGenerateOrderConsumer {
-//    @KafkaListener(topics = {"generateorder"})
+
+    @Autowired
+    private SeckillProductDAO seckillProductDAO;
+
+    @Autowired
+    private SuccessKilledDAO successKilledDAO;
+
+    @KafkaListener(topics = {"generateorder"})
     public void receiveMessage(String message){
-        System.out.println("generateorder:"+message);
-        //收到通道的消息之后执行秒杀操作
+        SeckillInfoContent seckillInfoContent = JSON.parseObject(message, SeckillInfoContent.class);
+        SeckillProduct seckillProduct= seckillProductDAO.selectByPrimaryKey(String.valueOf(seckillInfoContent.getSeckillId()));
+        SuccessKilled successKilled = new SuccessKilled();
+        successKilled.setProductName(seckillProduct.getName());
+        successKilled.setSeckillPrice(seckillProduct.getSeckillPrice());
+        successKilled.setState(seckillInfoContent.getState());
+        successKilled.setUserPhone(Long.parseLong(seckillInfoContent.getUserPhone()));
+        successKilled.setSeckillId(seckillInfoContent.getSeckillId());
+        successKilledDAO.updateByPrimaryKey(successKilled);
     }
 }
