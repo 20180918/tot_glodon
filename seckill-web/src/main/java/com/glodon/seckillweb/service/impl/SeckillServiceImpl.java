@@ -1,6 +1,6 @@
 package com.glodon.seckillweb.service.impl;
 
-import com.glodon.seckillcommon.Utils.LockUtil;
+import com.glodon.seckillcommon.utils.LockUtil;
 import com.glodon.seckillcommon.domain.SeckillProduct;
 import com.glodon.seckillcommon.domain.SuccessKilled;
 import com.glodon.seckillcommon.exception.ClosedSeckillException;

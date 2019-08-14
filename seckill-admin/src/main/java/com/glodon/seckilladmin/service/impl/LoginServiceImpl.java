@@ -28,16 +28,13 @@ public class LoginServiceImpl implements LoginService {
      * @return
      */
     @Override
-    public boolean validate(HttpServletResponse response, String code, String name, String password, String checkcode) throws Exception {
+    public boolean validate(String code, String name, String password, String checkcode) throws Exception {
+
         UserAdmin userAdmin = userAdminMapper.selectByRootName(name);
-        response.setContentType("text/html; charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        out.flush();
-        out.println("<script>");
         if (userAdmin == null) {
-            out.println("alert('用户名或密码不正确');");
-            out.println("history.back();");
-            out.println("</script>");
+            return false;
+        }
+        if (code == null) {
             return false;
         }
         String uName = userAdmin.getRootName();
@@ -45,10 +42,12 @@ public class LoginServiceImpl implements LoginService {
         if (name.equals(uName) && password.equals(uPassword) && code.equals(checkcode)) {
             return true;
         } else {
-            out.println("alert('验证码不正确');");
-            out.println("history.back();");
-            out.println("</script>");
             return false;
         }
+    }
+
+    @Override
+    public UserAdmin selectByRootName(String username) {
+        return userAdminMapper.selectByRootName(username);
     }
 }
