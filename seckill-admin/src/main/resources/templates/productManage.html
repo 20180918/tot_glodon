@@ -1,26 +1,8 @@
 ﻿<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
 <html xmlns:th="http://www.w3.org/1999/xhtml">
   <head>
     <title>商品管理</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-    <meta name="apple-mobile-web-app-capable" content="yes"/>
-    <link href="../static/resources/css/jquery-ui-themes.css" type="text/css" rel="stylesheet"/>
-    <link href="../static/resources/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
-    <link href="../static/data/styles.css" type="text/css" rel="stylesheet"/>
-    <link href="../static/files/商品管理/styles.css" type="text/css" rel="stylesheet"/>
-    <script src="../static/resources/scripts/jquery-1.7.1.min.js"></script>
-    <script src="../static/resources/scripts/jquery-ui-1.8.10.custom.min.js"></script>
-    <script src="../static/resources/scripts/prototypePre.js"></script>
-    <script src="../static/data/document.js"></script>
-    <script src="../static/resources/scripts/prototypePost.js"></script>
-    <script src="../static/files/商品管理/data.js"></script>
-    <script type="text/javascript">
-      $axure.utils.getTransparentGifPath = function() { return 'resources/images/transparent.gif'; };
-      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
-      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
-    </script>
       <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
       </script>
   </head>
@@ -36,7 +18,7 @@
             var row = $(this).parent().parent().parent().children().eq(1).html();
             list.push(row);
         });
-        alert(list);
+
         var param = { idList: JSON.stringify(list)};
 
         $.ajax({
@@ -48,6 +30,7 @@
                 console.log(data)
             }
         });
+        alert("编号为："+list+"已经上架成功");
     }
 </script>
       <script>
@@ -60,7 +43,6 @@
                   var row = $(this).parent().parent().parent().children().eq(1).html();
                   list.push(row);
               });
-              alert(list);
               var param = { idList: JSON.stringify(list)};
 
               $.ajax({
@@ -72,29 +54,33 @@
                       console.log(data)
                   }
               });
+              alert("编号为："+list+"已经下架成功");
           }
       </script>
 
     <h1 align="center">商品管理</h1>
-      <form action="/product/select">
-      商品编码：<input th:align="center" th:type="text" id="proCodeId" name="productCode"/>
-      </br>
-      商品名称：<input  th:align="center" th:type="text" id="proNameId" name="name"/>
-      </br>
+  </br>
+      <form align="center"   action="/product/select">
+      商品编码：<input style="height: 25px;width: 250px" th:align="center" th:type="text" id="proCodeId" name="productCode"/>
+      </br> </br>
+      商品名称：<input style="height: 25px;width: 250px" th:align="center" th:type="text" id="proNameId" name="name"/>
+      </br> </br>
       商品状态：<select  th:align="center" id="select1" th:name="productState">
           <option value ="" >全部</option>
           <option value ="1">已上架</option>
           <option value="0">未上架</option>
           <option value="-1">已下架</option>
           </select>
-      </br>
-          <button onclick="submit" >查询</button>
-
+          <button style="height: 25px;width: 150px" onclick="submit" >查询</button>
       </form>
-      <button onclick="Check()">批量上架</button>&nbsp&nbsp   <button onclick=" Check1()">批量下架</button>
+</br>
+<div align="center" >
+    <button  onclick="Check()">批量上架</button>&nbsp&nbsp   <button  onclick=" Check1()">批量下架</button>
+</div>
+
 
       </br>
-  <table  border="2" style="width: 1000px;" id="Tab">
+  <table align="center"  border="2" style="width: 1000px;" id="Tab">
     <tr>
       <td></td>
       <td>商品编号</td>
@@ -131,18 +117,14 @@
       </td>
     </tr>
   </table>
-      <tr>
-          <td>
+<div  align="center">
               <a th:href="@{/product/select(page=${prepage})}">上一页</a>&nbsp&nbsp&nbsp
-          </td>
           第<span th:text="${currentpage}"></span>页 &nbsp&nbsp&nbsp
-          <td>
               <a th:href="@{/product/select(page=${nextpage})}">下一页</a>
-          </td>
-      </tr>
+
       </br>
-<td>
-    共 <span th:text="${totle}"></span>页
-</td>
+
+    共<span th:text="${totle}"></span>页
+</div>
   </body>
 </html>
