@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>商品编码</th>
+                <th>商品名称</th>
+                <th>秒杀价格</th>
+                <th>开始时间</th>
+                <th>结束时间</th>
+                <th>总库存</th>
+                <th>剩余库存</th>
+                <th>商品描述信息</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${product_detail.name}"></td>
+                <td th:text="${product_detail.seckillPrice}"></td>
+                <td th:text="${product_detail.startTime}"></td>
+                <td th:text="${product_detail.endTime}"></td>
+                <td th:text="${product_detail.productStocks}"></td>
+                <td th:text="${product_detail.number}"></td>
+<!--                <td th:text="${product_detail.productDescription}">-->
+                </td>
+                <br/>
+                //图片显示
+                <img th:src="${product_detail.productImg}" th:width="100th"/>
+            </tr>
+            获得者：//代码未写
+
+<!--            <a href="/product/select"><button type="button" value="关闭"/></a>-->
+            </tbody>
+        </table>
+        <div th:utext="${product_detail.productDescription}"></div>
+    </div>
+</body>
+</html>

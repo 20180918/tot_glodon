@@ -118,7 +118,7 @@
       <td th:text="${pro.number}"></td>
       <td>
           <div id="editId" >
-              <a >详情</a>
+              <a th:href="@{/detail/display(productCode=${pro.productCode})}">详情</a>
               <div th:if="${pro.productState} eq '0'">
                   <a th:href="@{/product/findByProCode(productCode=${pro.productCode})}">编辑</a>&nbsp;
               </div>
