@@ -10,20 +10,31 @@
 <!--上传图片：<input id="userface" type="file" onchange="preview(this)"><br>-->
 <!--<div id="preview"></div>-->
 <!--<input type="button" id="btnClick" value="上传图片">-->
-
-<form id="form" method="post" enctype="multipart/form-data" th:action="@{~/admin/store}">
-    商品编码：<input type="text" name="productCode" th:field="${seckillProduct.productCode}"/><br/>
-    商品名称：<input type="text" name="name" th:field="${seckillProduct.name}"/><br/>
-    市场价格：<input type="text" name="productPrice" th:field="${seckillProduct.productPrice}"/><br/>
-    秒杀价格：<input type="text" name="seckillPrice" th:field="${seckillProduct.seckillPrice}"/><br/>
-    开始时间：<input type="date" name="startTime" th:value="${seckillProduct.startTime}"/><br/>
-    结束时间: <input type="date" name="endTime" th:value="${seckillProduct.endTime}"/><br/>
-    库存：<input type="text" name="number" th:field="${seckillProduct.number}"/><br/>
-    上传图片：<input id="userface" type="file" onchange="preview(this)">
+<h1 align="center">添加商品</h1>
+<form  align="center" id="form" method="post" enctype="multipart/form-data" th:action="@{~/admin/store}">
+    商品编码：<input style="height: 25px;width: 250px" type="text" name="productCode" th:field="${seckillProduct.productCode}"/><br/>
+   </br>
+    商品名称：<input style="height: 25px;width: 250px" type="text" name="name" th:field="${seckillProduct.name}"/><br/>
+    </br>
+    市场价格：<input style="height: 25px;width: 250px" type="text" name="productPrice" th:field="${seckillProduct.productPrice}"/><br/>
+    </br>
+    秒杀价格：<input style="height: 25px;width: 250px" type="text" name="seckillPrice" th:field="${seckillProduct.seckillPrice}"/><br/>
+    </br>
+    开始时间：<input style="height: 25px;width: 250px" type="date" name="startTime" th:value="${seckillProduct.startTime}"/><br/>
+    </br>
+    结束时间: <input style="height: 25px;width: 250px" type="date" name="endTime" th:value="${seckillProduct.endTime}"/><br/>
+    </br>
+    商品库存：<input style="height: 25px;width: 250px" type="text" name="number" th:field="${seckillProduct.number}"/><br/>
+    </br>
+    上传图片：<input style="height: 25px;width: 250px" id="userface" type="file" onchange="preview(this)">
+    </br>
     <div id="preview"></div>
     <input type="button" id="btnClick" value="上传图片"><br/>
-    描述：<input type="text" rows="5" cols="20" name="productDescription"
-              th:field="${seckillProduct.productDescription}"/><br/>
+    <br/>
+    商品描述：<input style="height: 50px;width: 250px" type="text" rows="5" cols="20" name="productDescription"
+              th:field="${seckillProduct.productDescription}"/>
+    <br/>
+    <br/>
     <input type="submit"  value="提交"/>
 </form>
 <script>
