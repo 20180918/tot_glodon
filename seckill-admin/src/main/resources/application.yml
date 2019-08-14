@@ -5,7 +5,7 @@ spring:
       max-file-size: 20MB
       max-request-size: 20MB
   datasource:
-    url: jdbc:mysql://106.14.13.61:3306/glodonseckill?useSSL=false
+    url: jdbc:mysql://106.14.13.61:3306/glodonseckill?useSSL=false&allowMultiQueries=true
     username: root
     password: uAiqwVwjJ8-i
     driver-class-name: com.mysql.cj.jdbc.Driver

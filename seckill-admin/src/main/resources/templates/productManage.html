@@ -23,14 +23,61 @@
     </script>
       <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
       </script>
+<script>
+    function Check() {
+        var  TabObj = $("#Tab");
+        //在table中找到input下类型为checkbox属性为选中状态的数据
+        var check=$("table input[type=checkbox]:checked");
+        var list = new Array();
+        check.each(function () {
+            var row = $(this).parent().parent().parent().children().eq(1).html();
+            list.push(row);
+        });
+        alert(list);
+        var param = { idList: JSON.stringify(list)};
 
+        $.ajax({
+            type : "GET",
+            dataType : "JSON",
+            url : "/product/updateBatch",
+            data : param,
+            success : function(data){
+                console.log(data)
+            }
+        });
+    }
+</script>
+      <script>
+          function Check1() {
+              var  TabObj = $("#Tab");
+              //在table中找到input下类型为checkbox属性为选中状态的数据
+              var check=$("table input[type=checkbox]:checked");
+              var list = new Array();
+              check.each(function () {
+                  var row = $(this).parent().parent().parent().children().eq(1).html();
+                  list.push(row);
+              });
+              alert(list);
+              var param = { idList: JSON.stringify(list)};
+
+              $.ajax({
+                  type : "GET",
+                  dataType : "JSON",
+                  url : "/product/updateBatchDown",
+                  data : param,
+                  success : function(data){
+                      console.log(data)
+                  }
+              });
+          }
+      </script>
     <h1>商品管理</h1>
       <form action="/product/select">
       商品编码：<input th:type="text" id="proCodeId" name="productCode"/>
       </br>
       商品名称：<input th:type="text" id="proNameId" name="name"/>
       </br>
-      商品状态：<select id="select1" name="productState">
+      商品状态：<select id="select1" th:name="productState">
           <option value ="" >全部</option>
           <option value ="1">已上架</option>
           <option value="0">未上架</option>
@@ -40,7 +87,10 @@
           <button onclick="submit" >查询</button>
 
       </form>
-  <table border="1" style="width: 500px;">
+      <button onclick="Check()">批量上架</button>&nbsp&nbsp   <button onclick=" Check1()">批量下架</button>
+
+      </br>
+  <table border="1" style="width: 500px;" id="Tab">
     <tr>
       <td></td>
       <td>商品编号</td>
@@ -51,8 +101,12 @@
       <td>操作</td>
     </tr>
     <tr th:each='pro:${listVo}'>
-        <td></td>
-      <td th:text="${pro.productCode}"></td>
+        <td>
+            <form>
+              <input type="checkbox">
+           </form>
+        </td>
+      <td th:name="proCode" th:text="${pro.productCode}"></td>
       <td th:text="${pro.name}"></td>
 <!--      <td th:if="${pro.productState==0}" th:text="未上架"></td>-->
         <div class="top" th:switch="${pro.productState}">
@@ -67,7 +121,8 @@
               <a >详情</a>
               <div th:if="${pro.productState} eq '0'">
                   <a th:href="@{/product/findByProCode(productCode=${pro.productCode})}">编辑</a>&nbsp;
-              <div>
+              </div>
+          </div>
 
       </td>
     </tr>
