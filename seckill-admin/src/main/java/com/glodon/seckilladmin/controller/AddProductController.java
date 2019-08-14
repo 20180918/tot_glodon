@@ -40,6 +40,7 @@ public class AddProductController {
     @RequestMapping(value = "/store", method = RequestMethod.POST)
     public String store(SeckillProduct seckillProduct) {
         addProductService.store(seckillProduct);
-        return "product_manager";
+//        return "product_manager";
+        return "productManage";
     }
 }

@@ -20,9 +20,8 @@ public class ProductDetailController {
     public String display(@RequestParam(value = "productCode", required = false) String  productCode, Model model){
         SeckillProduct seckillProduct = secKillProService.findByProductCode(productCode);
         model.addAttribute("product_detail",seckillProduct);
-        List<SuccessKilled> array_phone_list = secKillProService.select_phone(productCode);
-        String[] phone = array_phone_list.toArray(new String[array_phone_list.size()]);
-        model.addAttribute("person",phone);
+        List<SuccessKilled> phone_list = secKillProService.select_phone(productCode);
+        model.addAttribute("person",phone_list);
         return "detail_Info";
     }
 }
