@@ -14,15 +14,21 @@
   </sql>
     <insert id="insertSuccessKilled" parameterType="java.lang.String">
    INSERT ignore INTO success_killed(seckill_id,user_phone,state)
-        VALUES (#{seckillId},#{userPhone},0)
+        VALUES (#{seckillId},#{userPhone},2)
   </insert>
 
-    <select id="queryByIdWithSeckill" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="selectBySeckillIdIdAndUserPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from success_killed where seckill_id = #{seckillId} and user_phone =#{userPhone};
     </select>
+    <update id="updateBySeckillIdIdAndUserPhone"  parameterType="java.lang.String">
 
+        update success_killed set  `state` = 1
+        where seckill_id = #{seckillId,jdbcType=BIGINT}
+        and user_phone = #{userPhone,jdbcType=BIGINT}
+
+    </update>
     <select id="selectByPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

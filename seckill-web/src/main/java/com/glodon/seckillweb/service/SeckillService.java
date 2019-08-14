@@ -39,4 +39,12 @@ public interface SeckillService {
      * @return
      */
     void doSeckill(String seckillId, String userPhone, String md5);
+
+    /**
+     * 查询秒杀结果
+     * @param seckillId
+     * @param phone
+     * @return
+     */
+    Byte searchSeckillResult(String seckillId, String phone);
 }

@@ -17,7 +17,7 @@ var seckill = {
             return '/seckill/execution/' + seckillId + '/' + phone + '/' + md5;
         },
         isGrab: function (seckillId, phone) {
-            return '/seckill/isGrab/' + seckillId + '/' + phone;
+            return '/seckill/taskseckillresult/' + seckillId + '/' + phone;
         }
     },
     handleSeckillkill: function (seckillId, node) {
@@ -37,14 +37,14 @@ var seckill = {
                         seckill.VAL.seckillId = seckillId;
                         var currentPhone = $.cookie('killPhone');
                         var killUrl = seckill.URL.execution(seckillId, currentPhone, md5);
-                        console.log("killUrl:" + killUrl);
+
                         //绑定一次点击事件
                         $('#killBtn').one('click', function () {
                             //执行秒杀请求
                             //1:先禁用按钮
                             $(this).addClass('disabled');
                             //2:发送秒杀请求执行秒杀
-                            console.log("发送秒杀请求执行秒杀")
+
                             $.post(killUrl, {}, function (result) {
                                 if (result && result['success']) {
                                     console.log(result)
@@ -53,15 +53,18 @@ var seckill = {
                                     var state = killResult['state'];
                                     var stateInfo = killResult['stateInfo'];
                                     //3:显示秒杀结果
-                                    console.log(killResult.state)
-                                    if(killResult.state==200){
-                                        node.html('<span class="label label-success"> 秒杀成功 </span>');
+
+                                    if(killResult.state==2){
+                                        node.html('<img style="width: 400px;height:400px;border-radius: 10px;position: fixed;z-index: 999;left: 40%;top: 30%;" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565786577191&di=df161a4a09fdb35bbd3912981fe920fb&imgtype=0&src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20160418%2Fda88020897c94bf8bf63218130fd6306_th.jpg">');
+                                        setInterval(function () {
+                                            seckill.isGrab()
+                                        },1000)
                                     }
-                                    else if(killResult.state==401){
-                                        node.html('<span class="label label-success"> 秒杀已经关闭 </span>');
+                                    else if(killResult.state==205){
+                                        node.html('<span class="label label-success"> 未注册 </span>');
                                     }
-                                    else if(killResult.state==402){
-                                        node.html('<span class="label label-success"> 禁止重复秒杀 </span>');
+                                    else if(killResult.state==206){
+                                        node.html('<span class="label label-success"> 密钥验证不通过 </span>');
                                     }
                                     else if(killResult.state==400){
                                         node.html('<span class="label label-success"> 服务异常 </span>');
@@ -80,7 +83,7 @@ var seckill = {
                         seckill.countdown(seckillId, now, start, end);
                     }
                 } else {
-                    console.log('result:' + result);
+
                 }
 
             });
@@ -167,25 +170,38 @@ var seckill = {
         }
     },
     isGrab: function () {
+        console.log(">>>>秒杀排队中..."+seckill.VAL.seckillId);
         var node = $('#seckill-box');
         var currentPhone = $.cookie('killPhone');
         $.post(seckill.URL.isGrab(seckill.VAL.seckillId, currentPhone),
             {},
-            function (result) {
+            function (res) {
+                result=res.data.state
                 if (result == 0) {
-                    console.log(">>>>秒杀排队中...");
-                    node.html('<span class="label label-success">' + "排队中..." + '</span>');
+                    node.html('<span class="label label-success">' + "秒杀成功" + '</span>');
+                    setTimeout(function () {
+                        location.href='/seckillkilled/list/'+$.cookie('killPhone');
+                    },3000)
+
                 } else {
                     if (seckill.VAL.intervX != 0) {
                         window.clearInterval(seckill.VAL.intervX);
                     }
 
-                    if (result == 1) {
-                        console.log(">>>>秒杀成功");
-                        node.html('<span class="label label-success">' + "秒杀成功" + '</span>');
-                    } else if (result == 2) {
-                        console.log(">>>>没抢到！");
+                    if (result == 2) {
+                        node.html('<img style="width: 400px;height:400px;border-radius: 10px;position: fixed;z-index: 999;left: 40%;top: 30%;" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565786577191&di=df161a4a09fdb35bbd3912981fe920fb&imgtype=0&src=http%3A%2F%2Fimg.mp.itc.cn%2Fupload%2F20160418%2Fda88020897c94bf8bf63218130fd6306_th.jpg">');
+                    } else if (result == -1) {
+
                         node.html('<span class="label label-success">' + "没抢到" + '</span>');
+                        setTimeout(function () {
+                            location.href='/seckill/list';
+                        },3000)
+                    }else if (result == 1) {
+
+                        node.html('<span class="label label-success">' + "禁止重复操作" + '</span>');
+                        setTimeout(function () {
+                            location.href='/seckillkilled/list/'+$.cookie('killPhone');
+                        },3000)
                     }
                 }
 

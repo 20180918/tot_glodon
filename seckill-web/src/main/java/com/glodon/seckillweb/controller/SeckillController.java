@@ -2,6 +2,7 @@ package com.glodon.seckillweb.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.glodon.seckillcommon.domain.SeckillProduct;
+import com.glodon.seckillcommon.enums.StatusEnum;
 import com.glodon.seckillcommon.exception.ClosedSeckillException;
 import com.glodon.seckillcommon.exception.RepeatSeckillException;
 import com.glodon.seckillweb.dto.SeckillExecution;
@@ -13,6 +14,7 @@ import com.glodon.seckillweb.task.KafkaSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -33,6 +35,21 @@ public class SeckillController {
 
     @Autowired
     private KafkaSender kafkaSender;
+
+    /**
+     * 秒杀结果查询
+     * @param seckillId
+     * @param phone
+     * @return
+     */
+    @RequestMapping(value = "/taskseckillresult/{seckillId}/{phone}", method = RequestMethod.POST)
+    @ResponseBody
+    public  SeckillResult<SeckillExecution> searchSeckillResult(@PathVariable("seckillId") String seckillId,@PathVariable("phone") String phone) {
+        //获取秒杀列表
+        SeckillExecution execution = new SeckillExecution(Long.parseLong(seckillId), seckillService.searchSeckillResult(seckillId,phone));//未注册
+        return new SeckillResult<SeckillExecution>(true, execution);
+    }
+
 
     /**
      * 秒杀列表 (http://localhost:8080/seckill/list)
@@ -116,19 +133,30 @@ public class SeckillController {
     public SeckillResult<SeckillExecution> execute(@PathVariable("seckillId") Long seckillId,
                                                    @PathVariable("md5") String md5,
                                                    @PathVariable("userPhone") String userPhone) {
-        String seckillInfoContent = JSON.toJSONString(new SeckillInfoContent(seckillId, md5, userPhone, (byte) -1));
+        String seckillInfoContent = JSON.toJSONString(new SeckillInfoContent(seckillId, "", userPhone, (byte) -1));
         if (userPhone == null) {
-            return new SeckillResult<SeckillExecution>(false, "未注册");
+            SeckillExecution execution = new SeckillExecution(seckillId, StatusEnum.UNLOAD.getCode());//未注册
+            return new SeckillResult<SeckillExecution>(true, execution);
+        }
+        if (md5 == null || !md5.equals(getSaltMD5(seckillId))) {
+            SeckillExecution execution = new SeckillExecution(seckillId, StatusEnum.UNSAFE.getCode());//密钥验证不通过
+            return new SeckillResult<SeckillExecution>(true, execution);
         }
         try {
             // 向 clientdistribution 主题发送kafka请求信息内容
             kafkaSender.sendChannelMess("clientdistribution", seckillInfoContent);
-            SeckillExecution execution = new SeckillExecution(seckillId, 201);
+            SeckillExecution execution = new SeckillExecution(seckillId, StatusEnum.WAIT.getCode()); //等待中
             return new SeckillResult<SeckillExecution>(true, execution);
         } catch (Exception e) {
-            SeckillExecution execution = new SeckillExecution(seckillId, 400);
+            SeckillExecution execution = new SeckillExecution(seckillId, StatusEnum.WRONG.getCode()); //系统异常
             return new SeckillResult<SeckillExecution>(false, execution);
         }
+    }
+
+    private String getSaltMD5(Long seckillId) {
+        String base = seckillId + "/" + "wangpengpengasdas54d57asd754as";
+        String md5 = DigestUtils.md5DigestAsHex(base.getBytes());
+        return md5;
     }
 
 }
