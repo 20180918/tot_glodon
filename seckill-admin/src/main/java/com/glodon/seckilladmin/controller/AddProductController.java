@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 
 @Controller
@@ -23,20 +24,22 @@ public class AddProductController {
     @RequestMapping("/add")
     public String addProduct(Model model, SeckillProduct seckillProduct) {
         //设置日期格式
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        // new Date()为获取当前系统时间
-        String product_id = df.format(new Date());
-        seckillProduct.setSeckillId(product_id);
-        model.addAttribute("product_id", product_id);
-        model.addAttribute("seckillProduct", seckillProduct);
+//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        // new Date()为获取当前系统时间
+//        String product_id = df.format(new Date());
+//        seckillProduct.setSeckillId(product_id);
+//        model.addAttribute("product_id", product_id);
+//        model.addAttribute("seckillProduct", seckillProduct);
         return "add_product";
     }
-
-    @RequestMapping(value = "/store", method = RequestMethod.POST)
+    @RequestMapping(value = "/store_img", method = RequestMethod.POST)
     @ResponseBody
     public String input(@RequestParam(value = "productImg", required = false) MultipartFile productImg) {
         return addProductService.save(productImg);
     }
-
-
+    @RequestMapping(value = "/store", method = RequestMethod.POST)
+    public String store(SeckillProduct seckillProduct) {
+        addProductService.store(seckillProduct);
+        return "product_manager";
+    }
 }

@@ -1,7 +1,6 @@
 package com.glodon.seckillweb.service.impl;
 
-import com.glodon.seckillcommon.utils.RedisUtil;
-import com.glodon.seckillcommon.utils.SerializationUtil;
+import com.glodon.seckillcommon.utils.LockUtil;
 import com.glodon.seckillcommon.domain.SeckillProduct;
 import com.glodon.seckillcommon.domain.SuccessKilled;
 import com.glodon.seckillcommon.exception.ClosedSeckillException;
@@ -43,13 +42,13 @@ public class SeckillServiceImpl implements SeckillService {
     public SeckillProduct selectBySeckillId(String seckillId, boolean fastsearch) {
         if (fastsearch) {
             String key = "product_detail" + seckillId;
-            String redisObject = RedisUtil.get(key);
+            String redisObject = com.glodon.seckillcommon.utils.RedisUtil.get(key);
             if (redisObject == null) {
                 SeckillProduct seckillProduct = seckillProductDAO.selectByPrimaryKey(seckillId);
-                RedisUtil.set(key.getBytes(), SerializationUtil.serialize(seckillProduct));
+                com.glodon.seckillcommon.utils.RedisUtil.setExpire(key.getBytes(), com.glodon.seckillcommon.utils.SerializationUtil.serialize(seckillProduct),60);
                 return seckillProduct;
             } else {
-                return (SeckillProduct) SerializationUtil.deserialize(RedisUtil.get(key.getBytes()));
+                return (SeckillProduct) com.glodon.seckillcommon.utils.SerializationUtil.deserialize(com.glodon.seckillcommon.utils.RedisUtil.get(key.getBytes()));
             }
         } else {
             SeckillProduct seckillProduct = seckillProductDAO.selectByPrimaryKey(seckillId);
@@ -96,8 +95,14 @@ public class SeckillServiceImpl implements SeckillService {
             if (insertCount <= 0) {
                 throw new RepeatSeckillException("seckill repeated");
             } else {
+                int updateCount=0;
                 //减库存
-                int updateCount = seckillProductDAO.reduceNumber(seckillId, nowTime);
+                if(LockUtil.lock(seckillId)){
+                    updateCount = seckillProductDAO.reduceNumber(seckillId, nowTime);
+                    LockUtil.unLock(seckillId);
+                }else {
+                    return doSeckill(seckillId,userPhone,md5);
+                }
                 if (updateCount <= 0) {
                     //没有更新库存记录，说明秒杀结束 rollback
                     throw new ClosedSeckillException("seckill is closed");

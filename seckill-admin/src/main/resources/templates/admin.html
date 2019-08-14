@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8">
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#appendimg").html("")
+            var curWwwPath = window.document.location.href;
+            //获取主机地址之后的目录，如： uimcardprj/share/meun.jsp
+            var pathName = window.document.location.pathname;
+            var pos = curWwwPath.indexOf(pathName);
+            //获取主机地址，如： http://localhost:8083
+            var localhostPaht = curWwwPath.substring(0, pos);
+            var imgurl =localhostPaht+ "/user_admin/createImage?'+(new Date()).getTime();"
+            var str = "<img   id=\"img\" src=" + imgurl + " alt=\"验证666码\" title=\"点击更换\"\n" +
+                "                     onclick=\"this.src=" + imgurl + "\"/>";
+            $("#appendimg").append(str)
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#login").click(function () {
+                if ($("#username").val() == "") {
+                    alert("用户名不能为空")
+                } else if ($("#password").val() == "") {
+                    alert("密码不能为空")
+                } else if ($("#checkcode").val()=="") {
+                    alert("验证码不能为空")
+                }
+            })
+        })
+    </script>
+</head>
+
+<body>
+<div align="center" style="margin-top: 150px">
+    <form action="/user_admin/login" method="get">
+        <tr>
+            <p style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+
+            用户名：<input type="text" name="username" id="username"></br></br>
+            密&nbsp &nbsp码：<input type="password" name="password" id="password"></br></br>
+            <td>验证码：</td>
+            <td class="width50"><input id="checkcode" name="checkcode" type="text" class="width50"/></td>
+            <td><span id="checkcode_msg" class="required"></span></td>
+        </tr>
+
+        <input type="submit" value="登录" id="login">
+
+    </form>
+    <span id="appendimg" class="appendimg"></span>
+</div>
+</body>
+</html>

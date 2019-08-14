@@ -15,7 +15,6 @@ import redis.clients.jedis.JedisPool;
 public class RedisUtil {
 
     public static void main(String[] args) {
-        RedisUtil.remove("product_detail1000");
     }
     private static final Logger LOGGER = LoggerFactory.getLogger(RedisUtil.class);
     static JedisPool jedisPool = JedisPoolManager.getJedisPoolManager().pool;
@@ -61,6 +60,22 @@ public class RedisUtil {
         }
     }
 
+    /**
+     * 设置 byte[]超时时间
+     *
+     * @param key
+     * @param value
+     */
+    public synchronized static void setExpire(byte[] key, byte[] value,int seconds) {
+        try {
+            Jedis jedis = getJedis();
+            jedis.set(key, value);
+            jedis.expire(key,seconds);
+            jedis.close();
+        } catch (Exception e) {
+            LOGGER.error("Set key error : " + e);
+        }
+    }
     /**
      * 设置 String 过期时间
      *

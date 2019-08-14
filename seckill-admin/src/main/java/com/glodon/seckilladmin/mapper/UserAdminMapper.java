@@ -6,8 +6,11 @@ import org.springframework.stereotype.Repository;
 
 /**
  * UserAdminMapper继承基类
+ *
+ * @author lic-s
  */
 @Repository
 public interface UserAdminMapper extends MyBatisBaseDao<UserAdmin, Integer> {
+    UserAdmin selectByRootName(String name);
 
 }
