@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class KafkaClientDistributionConsumer {
-    @KafkaListener(topics = {"clientdistribution"})
-    public void receiveMessage(String message){
-        System.out.println("clientdistribution:"+message);
-        //收到通道的消息之后执行秒杀操作
-    }
+//    @KafkaListener(topics = {"clientdistribution"})
+//    public void receiveMessage(String message){
+//        System.out.println("clientdistribution:"+message);
+//        //收到通道的消息之后执行秒杀操作
+//    }
 }
