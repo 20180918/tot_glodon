@@ -1,12 +1,9 @@
 package com.glodon.seckillweb.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.glodon.seckillcommon.utils.LockUtil;
 import com.glodon.seckillcommon.domain.SeckillProduct;
 import com.glodon.seckillcommon.domain.SuccessKilled;
-import com.glodon.seckillcommon.exception.ClosedSeckillException;
-import com.glodon.seckillcommon.exception.RepeatSeckillException;
-import com.glodon.seckillweb.dto.SeckillExecution;
+import com.glodon.seckillcommon.utils.LockUtil;
 import com.glodon.seckillweb.dto.SeckillInfoContent;
 import com.glodon.seckillweb.dto.UrlExposer;
 import com.glodon.seckillweb.mapper.SeckillProductDAO;
@@ -51,7 +48,7 @@ public class SeckillServiceImpl implements SeckillService {
             String redisObject = com.glodon.seckillcommon.utils.RedisUtil.get(key);
             if (redisObject == null) {
                 SeckillProduct seckillProduct = seckillProductDAO.selectByPrimaryKey(seckillId);
-                com.glodon.seckillcommon.utils.RedisUtil.setExpire(key.getBytes(), com.glodon.seckillcommon.utils.SerializationUtil.serialize(seckillProduct),60);
+                com.glodon.seckillcommon.utils.RedisUtil.setExpire(key.getBytes(), com.glodon.seckillcommon.utils.SerializationUtil.serialize(seckillProduct), 60);
                 return seckillProduct;
             } else {
                 return (SeckillProduct) com.glodon.seckillcommon.utils.SerializationUtil.deserialize(com.glodon.seckillcommon.utils.RedisUtil.get(key.getBytes()));
@@ -88,47 +85,38 @@ public class SeckillServiceImpl implements SeckillService {
 
     @Override
     public void doSeckill(String seckillId, String userPhone, String md5) {
-        if (md5 == null || !md5.equals(getSaltMD5(seckillId))) {
-            //秒杀数据被重写了
-            throw new RuntimeException("seckill data rewrite");
-        }
-        //执行秒杀逻辑:减库存+增加购买明细
         Date nowTime = new Date();
-
-        try {
-            int insertCount = successKilledDAO.insertSuccessKilled(seckillId, userPhone);
-            //看是否该明细被重复插入，即用户是否重复秒杀
-            if (insertCount <= 0) {
-                throw new RepeatSeckillException("seckill repeated");
+        int insertCount = successKilledDAO.insertSuccessKilled(seckillId, userPhone);
+        //禁止重复秒杀
+        if (insertCount > 0) {
+            int updateCount = 0;
+            //获得锁
+            if (LockUtil.lock(seckillId)) {
+                updateCount = seckillProductDAO.reduceNumber(seckillId, nowTime);
+                //失去锁
+                LockUtil.unLock(seckillId);
             } else {
-                int updateCount=0;
-                //减库存
-                if(LockUtil.lock(seckillId)){
-                    updateCount = seckillProductDAO.reduceNumber(seckillId, nowTime);
-                    LockUtil.unLock(seckillId);
-                }else {
-                     doSeckill(seckillId,userPhone,md5);
-                }
-                if (updateCount <= 0) {
-                    //没有更新库存记录，说明秒杀结束 rollback
-                    String seckillInfoContent = JSON.toJSONString(new SeckillInfoContent(Long.valueOf(seckillId), md5, userPhone, (byte) -1));
-                    kafkaSender.sendChannelMess("generateorder", seckillInfoContent);
-                } else {
-                    // 向 generateorder 主题发送kafka请求信息内容
-                    String seckillInfoContent = JSON.toJSONString(new SeckillInfoContent(Long.valueOf(seckillId), md5, userPhone, (byte) 0));
-                    kafkaSender.sendChannelMess("generateorder", seckillInfoContent);
-                }
+                doSeckill(seckillId, userPhone, md5);
             }
+            if (updateCount <= 0) {
+                //没有更新库存记录，说明秒杀结束 rollback
+                String seckillInfoContent = JSON.toJSONString(new SeckillInfoContent(Long.valueOf(seckillId), md5, userPhone, (byte) -1));
+                kafkaSender.sendChannelMess("generateorder", seckillInfoContent);
+            } else {
+                // 向 generateorder 主题发送kafka请求信息内容
+                String seckillInfoContent = JSON.toJSONString(new SeckillInfoContent(Long.valueOf(seckillId), md5, userPhone, (byte) 0));
+                kafkaSender.sendChannelMess("generateorder", seckillInfoContent);
 
-        } catch (RepeatSeckillException e1) {
-            throw e1;
-        } catch (ClosedSeckillException e2) {
-            throw e2;
-        } catch (Exception e) {
-            //所以编译期异常转化为运行期异常
-            e.printStackTrace();
-            throw new RuntimeException();
+            }
+        } else {
+            successKilledDAO.updateBySeckillIdIdAndUserPhone(seckillId,userPhone);
         }
+    }
+
+    @Override
+    public Byte searchSeckillResult(String seckillId, String phone) {
+        SuccessKilled successKilled = successKilledDAO.selectBySeckillIdIdAndUserPhone(seckillId,phone);
+        return successKilled.getState();
     }
 
     private String getSaltMD5(String seckillId) {
@@ -136,6 +124,7 @@ public class SeckillServiceImpl implements SeckillService {
         String md5 = DigestUtils.md5DigestAsHex(base.getBytes());
         return md5;
     }
+
 
 }
 

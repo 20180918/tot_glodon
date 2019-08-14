@@ -24,12 +24,13 @@ public interface SuccessKilledDAO extends MyBatisBaseDao<SuccessKilled, SuccessK
 
 
     /**
-     * 根据秒杀商品的id查询明细SuccessKilled对象(该对象携带了Seckill秒杀产品对象)
      * @param seckillId
      * @return
      */
-    SuccessKilled queryByIdWithSeckill(@Param("seckillId") String seckillId,@Param("userPhone") String userPhone);
+    SuccessKilled selectBySeckillIdIdAndUserPhone(@Param("seckillId") String seckillId,@Param("userPhone") String userPhone);
 
     List<SuccessKilled> selectByPhone (@Param("userPhone") String userPhone);
+
+    void updateBySeckillIdIdAndUserPhone(@Param("seckillId") String seckillId,@Param("userPhone") String userPhone);
 
 }

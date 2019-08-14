@@ -25,12 +25,11 @@ public class KafkaClientDistributionConsumer {
     private SeckillService seckillService;
 
     @KafkaListener(topics = {"clientdistribution"})
-    public void receiveMessage(String message)throws Exception {
+    public void receiveMessage(String message){
         //收到通道的消息之后执行秒杀操作
         SeckillInfoContent seckillInfoContent = JSON.parseObject(message, SeckillInfoContent.class);
         String userPhone = seckillInfoContent.getUserPhone();
         Long seckillId = seckillInfoContent.getSeckillId();
-        String md5 = seckillInfoContent.getMd5();
-        seckillService.doSeckill(String.valueOf(seckillId), String.valueOf(userPhone), md5);
+        seckillService.doSeckill(String.valueOf(seckillId), String.valueOf(userPhone), "");
     }
 }
