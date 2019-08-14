@@ -31,12 +31,13 @@ public class AdminLoginController {
     @Autowired
     private LoginService loginService;
 
-    @RequestMapping( method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public String index() {
         return "admin";
     }
 
 
+    private String code;
 
     /**
      * 用户登录
@@ -50,21 +51,22 @@ public class AdminLoginController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(String username, String password, String checkcode, HttpSession session, Map<String, Object> map) throws Exception {
-        String code = (String) session.getAttribute("code");
+        if (!checkcode.equals(code)) {
+            map.put("msg", "验证码错误");
+            return "admin";
+        }
         UserAdmin userAdmin = loginService.selectByRootName(username);
+        if (userAdmin == null) {
+            map.put("msg", "用户不存在");
+            return "admin";
+        }
         String uName = userAdmin.getRootName();
         String uPassword = userAdmin.getRootPassword();
-        boolean flag = loginService.validate(code, username, password, checkcode);
-        if (!checkcode.equals(code)){
-            map.put("msg", "验证码错误");
-        }else if (!username.equals(uName) || !password.equals(uPassword)){
-            map.put("msg", "用户名或者密码错误");
+        if (uName == null || "".equals(uName) || "".equals(password) || uPassword == null || !username.equals(uName) || !password.equals(uPassword)) {
+            map.put("msg", "用户名或密码错误");
+            return "admin";
         }
-        System.out.println(flag);
-        if (flag) {
-            return "redirect:/admin/add";
-        }
-        return "admin";
+        return "redirect:/admin/add";
     }
 
     /**
@@ -82,9 +84,7 @@ public class AdminLoginController {
         g.setColor(new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255)));
         g.fillRect(0, 0, 80, 20);
         //获取生成的验证码
-        String code = getNumber();
-        //绑定验证码
-        session.setAttribute("code", code);
+         code = getNumber();
         g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 25));
         g.setColor(new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255)));
         g.drawString(code, 5, 25);

@@ -13,10 +13,13 @@
             var pos = curWwwPath.indexOf(pathName);
             //获取主机地址，如： http://localhost:8083
             var localhostPaht = curWwwPath.substring(0, pos);
-            var imgurl =localhostPaht+ "/user_admin/createImage?'+(new Date()).getTime();"
-            var str = "<img   id=\"img\" src=" + imgurl + " alt=\"验证666码\" title=\"点击更换\"\n" +
-                "                     onclick=\"this.src=" + imgurl + "\"/>";
-            $("#appendimg").append(str)
+            var imgurl =localhostPaht+ "/user_admin/createImage?"+(new Date()).getTime();
+            var img = $('<img>').attr('src',imgurl);
+            $("#appendimg").append(img);
+            img.on('click', function () {
+                $(this).attr('src', imgurl);
+            })
+
         });
     </script>
 
@@ -36,21 +39,22 @@
 </head>
 
 <body>
-<div align="center" style="margin-top: 150px">
-    <form action="/user_admin/login" method="get">
-        <tr>
+</br></br></br></br></br></br></br></br>
+<h1 align="center">管理员登录</h1>
+<div align="center" style="margin-top: 50px">
+    <form align="center"  action="/user_admin/login" method="get">
             <p style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+            用户姓名：<input  style="height: 25px;width: 250px" type="text" name="username" id="username"></br></br>
+            登录密码：<input  style="height: 25px;width: 250px" type="password" name="password" id="password"></br></br>
+            验 证 码：
+        <input  style="height: 25px;width: 200px" id="checkcode" name="checkcode" type="text" class="width50"/>
+        <span id="checkcode_msg" class="required"></span>
 
-            用户名：<input type="text" name="username" id="username"></br></br>
-            密&nbsp &nbsp码：<input type="password" name="password" id="password"></br></br>
-            <td>验证码：</td>
-            <td class="width50"><input id="checkcode" name="checkcode" type="text" class="width50"/></td>
-            <td><span id="checkcode_msg" class="required"></span></td>
-        </tr>
 
-        <input type="submit" value="登录" id="login">
+        &nbsp<input type="submit" value="登录" id="login">
 
     </form>
+    </br>
     <span id="appendimg" class="appendimg"></span>
 </div>
 </body>
