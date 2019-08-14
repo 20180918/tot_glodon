@@ -1,6 +1,8 @@
 package com.glodon.seckilladmin.service;
 
 
+import com.glodon.seckilladmin.domain.UserAdmin;
+
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -16,7 +18,8 @@ public interface LoginService {
      * @param va
      * @return
      */
-    boolean validate(HttpServletResponse response, String code, String name, String password, String va) throws Exception;
+    boolean validate(  String code, String name, String password, String va) throws Exception;
 
 
+    UserAdmin selectByRootName(String username);
 }
