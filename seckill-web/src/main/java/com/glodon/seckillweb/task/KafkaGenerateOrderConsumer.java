@@ -25,6 +25,7 @@ public class KafkaGenerateOrderConsumer {
     private SuccessKilledDAO successKilledDAO;
 
     @KafkaListener(topics = {"generateorder"})
+//    @KafkaListener(topics = {"generateorder"})
     public void receiveMessage(String message){
         String message2="{\"md5\":\"dad189d2d14f4df6b551d5a264771bfd\",\"seckillId\":1001,\"state\":-1,\"userPhone\":\"18603203843\"}";
 //        VO vo = JSON.parseObject(message, VO.class);
@@ -40,5 +41,6 @@ public class KafkaGenerateOrderConsumer {
         successKilled.setUserPhone(Long.parseLong(userPhone));
         successKilled.setSeckillId(Long.parseLong(seckillId));
         successKilledDAO.updateByPrimaryKey(successKilled);
+        //收到通道的消息之后执行秒杀操作
     }
 }
