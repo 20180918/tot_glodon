@@ -179,7 +179,7 @@ var seckill = {
                 result=res.data.state
 
                 if (result == 0) {
-                    console.log(秒杀成功);
+                    console.log("秒杀成功");
                     node.html('<span class="label label-success">' + "秒杀成功" + '</span>');
                     setTimeout(function () {
                         location.href='/seckillkilled/list/'+$.cookie('killPhone');
