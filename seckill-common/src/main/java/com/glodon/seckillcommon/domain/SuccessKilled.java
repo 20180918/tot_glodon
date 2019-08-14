@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class SuccessKilled extends SuccessKilledKey implements Serializable {
     /**
-     * 状态标识:-1:无效 0:成功 1:已付款 2:已发货
+     * 状态标识:-1:无效 0:成功
      */
     private Byte state;
 
