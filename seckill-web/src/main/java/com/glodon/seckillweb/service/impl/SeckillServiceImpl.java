@@ -10,12 +10,17 @@ import com.glodon.seckillweb.mapper.SeckillProductDAO;
 import com.glodon.seckillweb.mapper.SuccessKilledDAO;
 import com.glodon.seckillweb.service.SeckillService;
 import com.glodon.seckillweb.task.KafkaSender;
+import net.sf.jsqlparser.expression.StringValue;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 秒杀实现类
@@ -35,6 +40,9 @@ public class SeckillServiceImpl implements SeckillService {
     @Autowired
     private KafkaSender kafkaSender;
 
+    @Autowired
+    private RedisTemplate<String,String> redisTemplate;
+
     @Override
     public List<SeckillProduct> getSeckillList() {
         return seckillProductDAO.selectAll();
@@ -43,15 +51,17 @@ public class SeckillServiceImpl implements SeckillService {
 
     @Override
     public SeckillProduct selectBySeckillId(String seckillId, boolean fastsearch) {
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         if (fastsearch) {
             String key = "product_detail" + seckillId;
-            String redisObject = com.glodon.seckillcommon.utils.RedisUtil.get(key);
-            if (redisObject == null) {
+            String stringValue = null;
+            stringValue=redisTemplate.opsForValue().get(key);
+            if (StringUtils.isEmpty(stringValue)) {
                 SeckillProduct seckillProduct = seckillProductDAO.selectByPrimaryKey(seckillId);
-                com.glodon.seckillcommon.utils.RedisUtil.setExpire(key.getBytes(), com.glodon.seckillcommon.utils.SerializationUtil.serialize(seckillProduct), 60);
+                valueOperations.set(key, JSON.toJSONString(seckillProduct),60, TimeUnit.SECONDS);
                 return seckillProduct;
             } else {
-                return (SeckillProduct) com.glodon.seckillcommon.utils.SerializationUtil.deserialize(com.glodon.seckillcommon.utils.RedisUtil.get(key.getBytes()));
+                return  JSON.parseObject(stringValue, SeckillProduct.class);
             }
         } else {
             SeckillProduct seckillProduct = seckillProductDAO.selectByPrimaryKey(seckillId);
