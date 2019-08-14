@@ -1,6 +1,7 @@
 package com.glodon.seckilladmin.service;
 
 import com.glodon.seckillcommon.domain.SeckillProduct;
+import com.glodon.seckillcommon.domain.SuccessKilled;
 
 import java.util.List;
 
