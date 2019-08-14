@@ -41,7 +41,11 @@ public class LockUtil {
     }
 
     public static void unLock(String lockKey) {
-        System.out.println(Thread.currentThread().getName() + "删除锁");
+        LOGGER.info(Thread.currentThread().getName() + "删除锁");
         redis.del(lockKey);
+    }
+
+    public static void main(String[] args) {
+
     }
 }
