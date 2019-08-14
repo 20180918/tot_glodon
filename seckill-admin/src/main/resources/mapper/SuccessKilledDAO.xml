@@ -21,7 +21,7 @@
   </select>
   <!--查询获得者手机号-->
   <select id="select_phone" parameterType="com.glodon.seckillcommon.domain.SuccessKilledKey" resultMap="BaseResultMap">
-    select user_phone from success_killed where seckill_id = seckill_id = #{seckillId,jdbcType=BIGINT}
+    select user_phone from success_killed where seckill_id = #{seckillId,jdbcType=BIGINT}
   </select>
 
 
