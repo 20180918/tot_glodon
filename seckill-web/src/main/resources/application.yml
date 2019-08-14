@@ -1,4 +1,13 @@
 spring:
+  redis:
+    jedis:
+      pool:
+        max-wait: 5000
+        max-idle: 50
+        max-active: 5
+    cluster:
+      nodes: 127.0.0.1:10001,127.0.0.1:10002,127.0.0.1:10003,127.0.0.1:10004,127.0.0.1:10005,127.0.0.1:10006
+    timeout: 500
   kafka:
     bootstrap-servers: 10.1.84.22:9092,10.1.84.22:9093,10.1.84.22:9094
     consumer:
