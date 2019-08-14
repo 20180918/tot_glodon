@@ -1,9 +1,9 @@
 package com.glodon.seckilladmin.service;
 
 import com.glodon.seckillcommon.domain.SeckillProduct;
+import com.glodon.seckillcommon.domain.SuccessKilled;
 
 import java.util.List;
-import java.util.Map;
 
 public interface SecKillProService {
 
@@ -14,6 +14,8 @@ public interface SecKillProService {
     //编辑商品
     public void updataPro(SeckillProduct seckillProduct);
     //public void updataPro(String productCode);
+    //查询获得者手机号
+    public List<SuccessKilled> select_phone(String productId);
     //批量上架
     public void updateBatch(List<String> param);
 
