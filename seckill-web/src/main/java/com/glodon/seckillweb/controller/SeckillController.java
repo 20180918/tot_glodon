@@ -1,12 +1,15 @@
 package com.glodon.seckillweb.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.glodon.seckillcommon.domain.SeckillProduct;
 import com.glodon.seckillcommon.exception.ClosedSeckillException;
 import com.glodon.seckillcommon.exception.RepeatSeckillException;
 import com.glodon.seckillweb.dto.SeckillExecution;
+import com.glodon.seckillweb.dto.SeckillInfoContent;
 import com.glodon.seckillweb.dto.SeckillResult;
 import com.glodon.seckillweb.dto.UrlExposer;
 import com.glodon.seckillweb.service.SeckillService;
+import com.glodon.seckillweb.task.KafkaSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +30,9 @@ public class SeckillController {
 
     @Autowired
     private SeckillService seckillService;
+
+    @Autowired
+    private KafkaSender kafkaSender;
 
     /**
      * 秒杀列表 (http://localhost:8080/seckill/list)
@@ -110,21 +116,18 @@ public class SeckillController {
     public SeckillResult<SeckillExecution> execute(@PathVariable("seckillId") Long seckillId,
                                                    @PathVariable("md5") String md5,
                                                    @PathVariable("userPhone") String userPhone) {
+        String seckillInfoContent = JSON.toJSONString(new SeckillInfoContent(seckillId, md5, userPhone, (byte) -1));
         if (userPhone == null) {
             return new SeckillResult<SeckillExecution>(false, "未注册");
         }
         try {
-            SeckillExecution execution = seckillService.doSeckill(String.valueOf(seckillId), String.valueOf(userPhone), md5);
-            return new SeckillResult<SeckillExecution>(true, execution);
-        } catch (ClosedSeckillException e) {
-            SeckillExecution execution = new SeckillExecution(seckillId, 401);
-            return new SeckillResult<SeckillExecution>(true, execution);
-        } catch (RepeatSeckillException e2) {
-            SeckillExecution execution = new SeckillExecution(seckillId, 402);
+            // 向 clientdistribution 主题发送kafka请求信息内容
+            kafkaSender.sendChannelMess("clientdistribution", seckillInfoContent);
+            SeckillExecution execution = new SeckillExecution(seckillId, 201);
             return new SeckillResult<SeckillExecution>(true, execution);
         } catch (Exception e) {
             SeckillExecution execution = new SeckillExecution(seckillId, 400);
-            return new SeckillResult<SeckillExecution>(true, execution);
+            return new SeckillResult<SeckillExecution>(false, execution);
         }
     }
 
