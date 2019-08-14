@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class KafkaGenerateOrderConsumer {
-    @KafkaListener(topics = {"generateorder"})
+//    @KafkaListener(topics = {"generateorder"})
     public void receiveMessage(String message){
-        System.out.println(message);
+        System.out.println("generateorder:"+message);
         //收到通道的消息之后执行秒杀操作
     }
 }

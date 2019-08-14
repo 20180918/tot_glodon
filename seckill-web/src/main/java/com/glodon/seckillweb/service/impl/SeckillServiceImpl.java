@@ -1,15 +1,18 @@
 package com.glodon.seckillweb.service.impl;
 
-import com.glodon.seckillcommon.Utils.LockUtil;
+import com.alibaba.fastjson.JSON;
+import com.glodon.seckillcommon.utils.LockUtil;
 import com.glodon.seckillcommon.domain.SeckillProduct;
 import com.glodon.seckillcommon.domain.SuccessKilled;
 import com.glodon.seckillcommon.exception.ClosedSeckillException;
 import com.glodon.seckillcommon.exception.RepeatSeckillException;
 import com.glodon.seckillweb.dto.SeckillExecution;
+import com.glodon.seckillweb.dto.SeckillInfoContent;
 import com.glodon.seckillweb.dto.UrlExposer;
 import com.glodon.seckillweb.mapper.SeckillProductDAO;
 import com.glodon.seckillweb.mapper.SuccessKilledDAO;
 import com.glodon.seckillweb.service.SeckillService;
+import com.glodon.seckillweb.task.KafkaSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -31,6 +34,9 @@ public class SeckillServiceImpl implements SeckillService {
 
     @Autowired
     private SuccessKilledDAO successKilledDAO;
+
+    @Autowired
+    private KafkaSender kafkaSender;
 
     @Override
     public List<SeckillProduct> getSeckillList() {
@@ -81,7 +87,7 @@ public class SeckillServiceImpl implements SeckillService {
     }
 
     @Override
-    public SeckillExecution doSeckill(String seckillId, String userPhone, String md5) {
+    public void doSeckill(String seckillId, String userPhone, String md5) {
         if (md5 == null || !md5.equals(getSaltMD5(seckillId))) {
             //秒杀数据被重写了
             throw new RuntimeException("seckill data rewrite");
@@ -101,22 +107,16 @@ public class SeckillServiceImpl implements SeckillService {
                     updateCount = seckillProductDAO.reduceNumber(seckillId, nowTime);
                     LockUtil.unLock(seckillId);
                 }else {
-                    return doSeckill(seckillId,userPhone,md5);
+                     doSeckill(seckillId,userPhone,md5);
                 }
                 if (updateCount <= 0) {
                     //没有更新库存记录，说明秒杀结束 rollback
-                    throw new ClosedSeckillException("seckill is closed");
+                    String seckillInfoContent = JSON.toJSONString(new SeckillInfoContent(Long.valueOf(seckillId), md5, userPhone, (byte) -1));
+                    kafkaSender.sendChannelMess("generateorder", seckillInfoContent);
                 } else {
-                    //秒杀成功,得到成功插入的明细记录,并返回成功秒杀的信息 commit
-                    SeckillProduct seckillProduct= seckillProductDAO.selectByPrimaryKey(seckillId);
-                    SuccessKilled successKilled = new SuccessKilled();
-                    successKilled.setProductName(seckillProduct.getName());
-                    successKilled.setSeckillPrice(seckillProduct.getSeckillPrice());
-                    successKilled.setState((byte) 0);
-                    successKilled.setUserPhone(Long.parseLong(userPhone));
-                    successKilled.setSeckillId(Long.parseLong(seckillId));
-                    successKilledDAO.updateByPrimaryKey(successKilled);
-                    return new SeckillExecution(Long.parseLong(seckillId),200);
+                    // 向 generateorder 主题发送kafka请求信息内容
+                    String seckillInfoContent = JSON.toJSONString(new SeckillInfoContent(Long.valueOf(seckillId), md5, userPhone, (byte) 0));
+                    kafkaSender.sendChannelMess("generateorder", seckillInfoContent);
                 }
             }
 

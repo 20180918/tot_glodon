@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SecKillProImpl implements SecKillProService {
@@ -45,4 +46,13 @@ public class SecKillProImpl implements SecKillProService {
 //            SeckillProduct seckillPro = seckillProduct.selectByProductCode(productCode);
 //            seckillProduct.updateProductByProCode(seckillPro);
 //    }
+    @Override
+    public void updateBatch(List<String> param){
+          seckillProduct.updateBatch(param);
+    }
+    @Override
+    public void updateBatchDown(List<String> param){
+        seckillProduct.updateBatchDown(param);
+    }
+
 }
