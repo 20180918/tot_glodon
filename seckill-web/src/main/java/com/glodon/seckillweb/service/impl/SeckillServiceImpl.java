@@ -58,7 +58,7 @@ public class SeckillServiceImpl implements SeckillService {
             stringValue=redisTemplate.opsForValue().get(key);
             if (StringUtils.isEmpty(stringValue)) {
                 SeckillProduct seckillProduct = seckillProductDAO.selectByPrimaryKey(seckillId);
-                valueOperations.set(key, JSON.toJSONString(seckillProduct),60, TimeUnit.SECONDS);
+                valueOperations.set(key, JSON.toJSONString(seckillProduct),5, TimeUnit.SECONDS);
                 return seckillProduct;
             } else {
                 return  JSON.parseObject(stringValue, SeckillProduct.class);
